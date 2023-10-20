@@ -1,0 +1,12 @@
+// Pew-Pew Game. All Rights Reserved.
+
+
+#include "Components/PPCharacterMovementComponent.h"
+#include "Player/PPBaseCharacter.h"
+
+float UPPCharacterMovementComponent::GetMaxSpeed() const
+{
+	const float MaxSpeed = Super::GetMaxSpeed();
+	const APPBaseCharacter* Player = Cast<APPBaseCharacter>(GetPawnOwner());
+	return Player && Player->IsRunning() ? MaxSpeed * RunModifier : MaxSpeed;
+}
