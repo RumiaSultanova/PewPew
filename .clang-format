@@ -1,0 +1,16 @@
+Language: Cpp
+BasedOnStyle: Microsoft
+UseTab: Always
+BreakBeforeBraces: Allman
+ColumnLimit: '140'
+AccessModifierOffset: '-4'
+SortIncludes: false
+AllowShortBlocksOnASingleLine: false
+AlignAfterOpenBracket: DontAlign
+AllowShortFunctionsOnASingleLine: Inline
+PointerAlignment: Left
+AllowShortIfStatementsOnASingleLine: true
+SpacesBeforeTrailingComments: 2
+AllowShortCaseLabelsOnASingleLine: true
+IndentCaseLabels: true
+AlwaysBreakTemplateDeclarations: Yes
