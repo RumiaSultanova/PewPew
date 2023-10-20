@@ -3,6 +3,7 @@
 
 #include "Player/PPBaseCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
 APPBaseCharacter::APPBaseCharacter()
@@ -10,8 +11,12 @@ APPBaseCharacter::APPBaseCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
+	SpringArmComponent->SetupAttachment(GetRootComponent());
+	SpringArmComponent->bUsePawnControlRotation = true;
+	
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
-	CameraComponent->SetupAttachment(GetRootComponent());
+	CameraComponent->SetupAttachment(SpringArmComponent);
 }
 
 // Called when the game starts or when spawned
@@ -33,5 +38,19 @@ void APPBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAxis("MoveForward", this, &APPBaseCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &APPBaseCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("LookUp", this, &APPBaseCharacter::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("TurnAround", this, &APPBaseCharacter::AddControllerYawInput);
+}
+
+void APPBaseCharacter::MoveForward(float Amount)
+{
+	AddMovementInput(GetActorForwardVector(), Amount);
+}
+
+void APPBaseCharacter::MoveRight(float Amount)
+{
+	AddMovementInput(GetActorRightVector(), Amount);
 }
 
