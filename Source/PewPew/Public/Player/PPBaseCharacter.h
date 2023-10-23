@@ -6,7 +6,8 @@
 #include "GameFramework/Character.h"
 #include "PPBaseCharacter.generated.h"
 
-
+class UTextRenderComponent;
+class UPPHealthComponent;
 class USpringArmComponent;
 class UCameraComponent;
 
@@ -26,7 +27,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
 	UCameraComponent* CameraComponent;
 
-	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
+	UPPHealthComponent* HealthComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
+	UTextRenderComponent* HealthTextComponent;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
