@@ -1,6 +1,5 @@
 // Pew-Pew Game. All Rights Reserved.
 
-
 #include "Player/PPBaseCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -8,10 +7,8 @@
 #include "Components/PPHealthComponent.h"
 #include "Components/TextRenderComponent.h"
 
-// Sets default values
  APPBaseCharacter::APPBaseCharacter(const FObjectInitializer& ObjInit) : Super(ObjInit.SetDefaultSubobjectClass<UPPCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
@@ -27,25 +24,23 @@
  	HealthTextComponent->SetupAttachment(GetRootComponent());
 }
 
-// Called when the game starts or when spawned
 void APPBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
  	check(HealthComponent);
  	check(HealthTextComponent);
+
+ 	OnHealthChanged(HealthComponent->GetHealth());
+ 	HealthComponent->OnDeath.AddUObject(this, &APPBaseCharacter::OnDeath);
+ 	HealthComponent->OnHealthChanged.AddUObject(this, &APPBaseCharacter::OnHealthChanged);
 }
 
-// Called every frame
 void APPBaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
- 	const auto Health = HealthComponent->GetHealth();
- 	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
 }
 
-// Called to bind functionality to input
 void APPBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -93,4 +88,18 @@ float APPBaseCharacter::GetMovementDirection() const
  	const auto CrossProduct = FVector::CrossProduct(GetActorForwardVector(), VelocityNormal);
 	const auto Degrees = FMath::RadiansToDegrees(AngleBetween);
  	return CrossProduct.IsZero() ? Degrees : Degrees * FMath::Sign(CrossProduct.Z);
+}
+
+void APPBaseCharacter::OnHealthChanged(float Health)
+{
+ 	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
+}
+
+void APPBaseCharacter::OnDeath()
+{
+	PlayAnimMontage(DeathAnimMontage);
+
+ 	GetCharacterMovement()->DisableMovement();
+
+ 	SetLifeSpan(5.0f);
 }

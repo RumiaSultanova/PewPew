@@ -12,7 +12,7 @@ public class PewPew : ModuleRules
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
-		PublicIncludePaths.AddRange(new []{"PewPew/Public/Player", "PewPew/Public/Components"});
+		PublicIncludePaths.AddRange(new []{"PewPew/Public/Player", "PewPew/Public/Components", "PewPew/Public/Dev"});
 		
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

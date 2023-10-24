@@ -1,24 +1,35 @@
 // Pew-Pew Game. All Rights Reserved.
 
-
 #include "Components/PPHealthComponent.h"
+#include "GameFramework/Actor.h"
 
-// Sets default values for this component's properties
 UPPHealthComponent::UPPHealthComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
-
-	// ...
 }
 
-
-// Called when the game starts
 void UPPHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
 	Health = MaxHealth;
+	OnHealthChanged.Broadcast(Health);
+
+	if (AActor* ComponentOwner = GetOwner())
+	{
+		ComponentOwner->OnTakeAnyDamage.AddDynamic(this, &UPPHealthComponent::OnTakeAnyDamage);
+	}
 }
 
+void UPPHealthComponent::OnTakeAnyDamage(AActor* DamageActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
+{
+	if (Damage <= 0.0f || IsDead()){ return; }
+
+	Health = FMath::Clamp(Health - Damage, 0.0f, MaxHealth);
+	OnHealthChanged.Broadcast(Health);
+
+	if (IsDead())
+	{
+		OnDeath.Broadcast();
+	}
+}
