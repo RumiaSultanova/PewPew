@@ -36,32 +36,36 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Animation")
 	UAnimMontage* DeathAnimMontage;
 
-	UPROPERTY(EditDefaultsOnly, Category="Movement")
+	UPROPERTY(EditDefaultsOnly, Category="Damage")
+	float LifeSpanOnDeath = 5.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category="Damage")
 	FVector2D LandedDamageVelocity = FVector2D(900.0f, 1200.0f);
 
-	UPROPERTY(EditDefaultsOnly, Category="Movement")
+	UPROPERTY(EditDefaultsOnly, Category="Damage")
 	FVector2D LandedDamage = FVector2D(10.0f, 100.0f);
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 	UFUNCTION(BlueprintCallable, Category="Movement")
 	bool IsRunning() const;
 
 	UFUNCTION(BlueprintCallable, Category="Movement")
 	float GetMovementDirection() const;
-	
+
+	virtual void Tick(float DeltaTime) override;
+
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
 private:
 	bool WantsToRun = false;
 	bool IsMovingForward = false;
-	
+
+	UFUNCTION()
+	void OnGroundLanded(const FHitResult& Hit);
+
 	void MoveForward(float Amount);
 	void MoveRight(float Amount);
 
@@ -70,7 +74,4 @@ private:
 
 	void OnHealthChanged(float Health);
 	void OnDeath();
-
-	UFUNCTION()
-	void OnGroundLanded(const FHitResult& Hit);
 };

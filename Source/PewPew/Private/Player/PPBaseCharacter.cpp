@@ -47,6 +47,7 @@ void APPBaseCharacter::Tick(float DeltaTime)
 void APPBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	check(PlayerInputComponent);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &APPBaseCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APPBaseCharacter::MoveRight);
@@ -104,7 +105,7 @@ void APPBaseCharacter::OnDeath()
 
  	GetCharacterMovement()->DisableMovement();
 
- 	SetLifeSpan(5.0f);
+ 	SetLifeSpan(LifeSpanOnDeath);
 
  	if (Controller)
  	{
@@ -114,7 +115,7 @@ void APPBaseCharacter::OnDeath()
 
 void APPBaseCharacter::OnGroundLanded(const FHitResult& Hit)
 {
-	const auto FallVelocityZ = -GetCharacterMovement()->Velocity.Z;
+	const auto FallVelocityZ = -GetVelocity().Z;
 
  	if (FallVelocityZ < LandedDamageVelocity.X) { return; }
 
