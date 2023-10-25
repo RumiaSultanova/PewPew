@@ -17,7 +17,8 @@ public class PewPew : ModuleRules
 			"PewPew/Public/Player",
 			"PewPew/Public/Components",
 			"PewPew/Public/Dev",
-			"PewPew/Public/Weapon"
+			"PewPew/Public/Weapon",
+			"PewPew/Public/UI"
 		});
 		
 		// Uncomment if you are using Slate UI
