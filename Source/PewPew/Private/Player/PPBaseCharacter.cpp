@@ -35,6 +35,8 @@ void APPBaseCharacter::BeginPlay()
  	OnHealthChanged(HealthComponent->GetHealth());
  	HealthComponent->OnDeath.AddUObject(this, &APPBaseCharacter::OnDeath);
  	HealthComponent->OnHealthChanged.AddUObject(this, &APPBaseCharacter::OnHealthChanged);
+
+	LandedDelegate.AddDynamic(this, &APPBaseCharacter::OnGroundLanded);
 }
 
 void APPBaseCharacter::Tick(float DeltaTime)
@@ -108,4 +110,14 @@ void APPBaseCharacter::OnDeath()
  	{
  		Controller->ChangeState(NAME_Spectating);
  	}
+}
+
+void APPBaseCharacter::OnGroundLanded(const FHitResult& Hit)
+{
+	const auto FallVelocityZ = -GetCharacterMovement()->Velocity.Z;
+
+ 	if (FallVelocityZ < LandedDamageVelocity.X) { return; }
+
+ 	const auto FinalDamage = FMath::GetMappedRangeValueClamped(LandedDamageVelocity, LandedDamage, FallVelocityZ);
+ 	TakeDamage(FinalDamage, FDamageEvent{}, nullptr, nullptr);
 }
