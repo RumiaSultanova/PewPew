@@ -10,6 +10,7 @@ class UTextRenderComponent;
 class UPPHealthComponent;
 class USpringArmComponent;
 class UCameraComponent;
+class APPBaseWeapon;
 
 UCLASS()
 class PEWPEW_API APPBaseCharacter : public ACharacter
@@ -45,7 +46,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Damage")
 	FVector2D LandedDamage = FVector2D(10.0f, 100.0f);
 
-	// Called when the game starts or when spawned
+	UPROPERTY(EditDefaultsOnly, Category="Weapon")
+	TSubclassOf<APPBaseWeapon> WeaponClass;
+
 	virtual void BeginPlay() override;
 
 public:	
@@ -74,4 +77,6 @@ private:
 
 	void OnHealthChanged(float Health);
 	void OnDeath();
+
+	void SpawnWeapon();
 };

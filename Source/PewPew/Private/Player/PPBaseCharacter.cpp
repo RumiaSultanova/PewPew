@@ -7,6 +7,7 @@
 #include "Components/PPHealthComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "GameFramework/Controller.h"
+#include "Weapon/PPBaseWeapon.h"
 
  APPBaseCharacter::APPBaseCharacter(const FObjectInitializer& ObjInit) : Super(ObjInit.SetDefaultSubobjectClass<UPPCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
@@ -37,6 +38,8 @@ void APPBaseCharacter::BeginPlay()
  	HealthComponent->OnHealthChanged.AddUObject(this, &APPBaseCharacter::OnHealthChanged);
 
 	LandedDelegate.AddDynamic(this, &APPBaseCharacter::OnGroundLanded);
+
+ 	SpawnWeapon();
 }
 
 void APPBaseCharacter::Tick(float DeltaTime)
@@ -122,3 +125,15 @@ void APPBaseCharacter::OnGroundLanded(const FHitResult& Hit)
  	const auto FinalDamage = FMath::GetMappedRangeValueClamped(LandedDamageVelocity, LandedDamage, FallVelocityZ);
  	TakeDamage(FinalDamage, FDamageEvent{}, nullptr, nullptr);
 }
+
+void APPBaseCharacter::SpawnWeapon()
+ {
+	 if (!GetWorld()) { return; }
+
+ 	const auto Weapon = GetWorld()->SpawnActor<APPBaseWeapon>(WeaponClass);
+ 	if (Weapon)
+ 	{
+ 		FAttachmentTransformRules AttachmentRules (EAttachmentRule::SnapToTarget, false);
+ 		Weapon->AttachToComponent(GetMesh(), AttachmentRules, "WeaponSocket");
+ 	}
+ }
