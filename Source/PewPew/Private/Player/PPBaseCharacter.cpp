@@ -6,8 +6,8 @@
 #include "Components/PPCharacterMovementComponent.h"
 #include "Components/PPHealthComponent.h"
 #include "Components/TextRenderComponent.h"
+#include "Components/PPWeaponComponent.h"
 #include "GameFramework/Controller.h"
-#include "Weapon/PPBaseWeapon.h"
 
  APPBaseCharacter::APPBaseCharacter(const FObjectInitializer& ObjInit) : Super(ObjInit.SetDefaultSubobjectClass<UPPCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
@@ -26,6 +26,8 @@
 	HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
  	HealthTextComponent->SetupAttachment(GetRootComponent());
  	HealthTextComponent->SetOwnerNoSee(true);
+
+	WeaponComponent = CreateDefaultSubobject<UPPWeaponComponent>("WeaponComponent");
 }
 
 void APPBaseCharacter::BeginPlay()
@@ -40,8 +42,6 @@ void APPBaseCharacter::BeginPlay()
  	HealthComponent->OnHealthChanged.AddUObject(this, &APPBaseCharacter::OnHealthChanged);
 
 	LandedDelegate.AddDynamic(this, &APPBaseCharacter::OnGroundLanded);
-
- 	SpawnWeapon();
 }
 
 void APPBaseCharacter::Tick(float DeltaTime)
@@ -53,6 +53,7 @@ void APPBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	check(PlayerInputComponent);
+	check(WeaponComponent);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &APPBaseCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APPBaseCharacter::MoveRight);
@@ -61,6 +62,7 @@ void APPBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &APPBaseCharacter::Jump);
 	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &APPBaseCharacter::OnStartRunning);
 	PlayerInputComponent->BindAction("Run", IE_Released, this, &APPBaseCharacter::OnStopRunning);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &UPPWeaponComponent::Fire);
 }
 
 void APPBaseCharacter::MoveForward(float Amount)
@@ -127,15 +129,3 @@ void APPBaseCharacter::OnGroundLanded(const FHitResult& Hit)
  	const auto FinalDamage = FMath::GetMappedRangeValueClamped(LandedDamageVelocity, LandedDamage, FallVelocityZ);
  	TakeDamage(FinalDamage, FDamageEvent{}, nullptr, nullptr);
 }
-
-void APPBaseCharacter::SpawnWeapon()
- {
-	 if (!GetWorld()) { return; }
-
- 	const auto Weapon = GetWorld()->SpawnActor<APPBaseWeapon>(WeaponClass);
- 	if (Weapon)
- 	{
- 		FAttachmentTransformRules AttachmentRules (EAttachmentRule::SnapToTarget, false);
- 		Weapon->AttachToComponent(GetMesh(), AttachmentRules, "WeaponSocket");
- 	}
- }

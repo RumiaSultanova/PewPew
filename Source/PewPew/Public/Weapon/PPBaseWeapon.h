@@ -16,6 +16,8 @@ class PEWPEW_API APPBaseWeapon : public AActor
 public:	
 	APPBaseWeapon();
 
+	virtual void Fire();
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
 	USkeletalMeshComponent* WeaponMesh;

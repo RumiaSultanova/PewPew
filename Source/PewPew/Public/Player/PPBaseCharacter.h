@@ -10,7 +10,7 @@ class UTextRenderComponent;
 class UPPHealthComponent;
 class USpringArmComponent;
 class UCameraComponent;
-class APPBaseWeapon;
+class UPPWeaponComponent;
 
 UCLASS()
 class PEWPEW_API APPBaseCharacter : public ACharacter
@@ -34,6 +34,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
 	UTextRenderComponent* HealthTextComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
+	UPPWeaponComponent* WeaponComponent;
+
 	UPROPERTY(EditDefaultsOnly, Category="Animation")
 	UAnimMontage* DeathAnimMontage;
 
@@ -45,9 +48,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="Damage")
 	FVector2D LandedDamage = FVector2D(10.0f, 100.0f);
-
-	UPROPERTY(EditDefaultsOnly, Category="Weapon")
-	TSubclassOf<APPBaseWeapon> WeaponClass;
 
 	virtual void BeginPlay() override;
 
@@ -77,6 +77,4 @@ private:
 
 	void OnHealthChanged(float Health);
 	void OnDeath();
-
-	void SpawnWeapon();
 };
