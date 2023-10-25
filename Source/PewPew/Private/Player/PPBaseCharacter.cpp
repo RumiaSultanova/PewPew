@@ -6,6 +6,7 @@
 #include "Components/PPCharacterMovementComponent.h"
 #include "Components/PPHealthComponent.h"
 #include "Components/TextRenderComponent.h"
+#include "GameFramework/Controller.h"
 
  APPBaseCharacter::APPBaseCharacter(const FObjectInitializer& ObjInit) : Super(ObjInit.SetDefaultSubobjectClass<UPPCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
@@ -102,4 +103,9 @@ void APPBaseCharacter::OnDeath()
  	GetCharacterMovement()->DisableMovement();
 
  	SetLifeSpan(5.0f);
+
+ 	if (Controller)
+ 	{
+ 		Controller->ChangeState(NAME_Spectating);
+ 	}
 }
