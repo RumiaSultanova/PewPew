@@ -65,6 +65,7 @@ void APPBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Run", IE_Released, this, &APPBaseCharacter::OnStopRunning);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &UPPWeaponComponent::StartFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &UPPWeaponComponent::StopFire);
+	PlayerInputComponent->BindAction("NextWeapon", IE_Pressed, WeaponComponent, &UPPWeaponComponent::NextWeapon);
 }
 
 void APPBaseCharacter::MoveForward(float Amount)
@@ -121,6 +122,7 @@ void APPBaseCharacter::OnDeath()
  		Controller->ChangeState(NAME_Spectating);
  	}
  	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
+ 	WeaponComponent->StopFire();
 }
 
 void APPBaseCharacter::OnGroundLanded(const FHitResult& Hit)
