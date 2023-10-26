@@ -25,17 +25,11 @@ void APPBaseWeapon::BeginPlay()
 	check(WeaponMesh);
 }
 
-void APPBaseWeapon::StartFire()
-{
-}
+void APPBaseWeapon::StartFire(){}
 
-void APPBaseWeapon::StopFire()
-{
-}
+void APPBaseWeapon::StopFire(){}
 
-void APPBaseWeapon::MakeShot()
-{
-}
+void APPBaseWeapon::MakeShot(){}
 
 APlayerController* APPBaseWeapon::GetPlayerController() const
 {
