@@ -7,6 +7,7 @@
 #include "PPProjectile.generated.h"
 
 class USphereComponent;
+class UProjectileMovementComponent;
 
 UCLASS()
 class PEWPEW_API APPProjectile : public AActor
@@ -16,6 +17,8 @@ class PEWPEW_API APPProjectile : public AActor
 public:	
 	APPProjectile();
 
+	void SetShotDirection(const FVector& Direction) { ShotDirection = Direction; }
+
 protected:
 	UPROPERTY(VisibleDefaultsOnly, Category="Weapon")
 	USphereComponent* CollisionComponent;
@@ -23,5 +26,11 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category="Weapon")
 	float CollisionRadius = 5.0f;
 
+	UPROPERTY(VisibleDefaultsOnly, Category="Weapon")
+	UProjectileMovementComponent* MovementComponent;
+
 	virtual void BeginPlay() override;
+
+private:
+	FVector ShotDirection;
 };
