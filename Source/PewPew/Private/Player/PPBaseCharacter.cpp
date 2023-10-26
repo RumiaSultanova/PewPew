@@ -7,6 +7,7 @@
 #include "Components/PPHealthComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "Components/PPWeaponComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/Controller.h"
 
  APPBaseCharacter::APPBaseCharacter(const FObjectInitializer& ObjInit) : Super(ObjInit.SetDefaultSubobjectClass<UPPCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -118,6 +119,7 @@ void APPBaseCharacter::OnDeath()
  	{
  		Controller->ChangeState(NAME_Spectating);
  	}
+ 	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
 }
 
 void APPBaseCharacter::OnGroundLanded(const FHitResult& Hit)
