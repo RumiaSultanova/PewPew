@@ -74,11 +74,3 @@ void APPBaseWeapon::MakeHit(FHitResult& HitResult, const FVector& TraceStart, co
 
 	GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECC_Visibility, CollisionParams);
 }
-
-void APPBaseWeapon::MakeDamage(const FHitResult& HitResult)
-{
-	const auto DamagedActor = HitResult.GetActor();
-	if (!DamagedActor){ return; }
-
-	DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPlayerController(), this);
-}
