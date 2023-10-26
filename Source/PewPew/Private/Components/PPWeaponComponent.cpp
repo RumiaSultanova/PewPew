@@ -1,6 +1,5 @@
 // Pew-Pew Game. All Rights Reserved.
 
-
 #include "Components/PPWeaponComponent.h"
 #include "Weapon/PPBaseWeapon.h"
 #include "GameFramework/Character.h"
@@ -32,8 +31,14 @@ void UPPWeaponComponent::SpawnWeapon()
 	CurrentWeapon->SetOwner(Character);
 }
 
-void UPPWeaponComponent::Fire()
+void UPPWeaponComponent::StartFire()
 {
 	if (!CurrentWeapon) { return; }
-	CurrentWeapon->Fire();
+	CurrentWeapon->StartFire();
+}
+
+void UPPWeaponComponent::StopFire()
+{
+	if (!CurrentWeapon) { return; }
+	CurrentWeapon->StopFire();
 }

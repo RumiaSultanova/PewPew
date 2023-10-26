@@ -16,7 +16,8 @@ class PEWPEW_API UPPWeaponComponent : public UActorComponent
 public:	
 	UPPWeaponComponent();
 
-	void Fire();
+	void StartFire();
+	void StopFire();
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category="Weapon")
