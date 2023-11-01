@@ -3,6 +3,9 @@
 #include "Components/PPWeaponComponent.h"
 #include "Weapon/PPBaseWeapon.h"
 #include "GameFramework/Character.h"
+#include "Animations/PPEquipFinishedAnimNotify.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogWeaponComponent, All, All);
 
 UPPWeaponComponent::UPPWeaponComponent()
 {
@@ -14,6 +17,7 @@ void UPPWeaponComponent::BeginPlay()
 	Super::BeginPlay();
 
 	CurrentWeaponIndex = 0;
+	InitAnimations();
 	SpawnWeapons();
 	EquipWeapon(CurrentWeaponIndex);
 }
@@ -69,11 +73,13 @@ void UPPWeaponComponent::EquipWeapon(int32 WeaponIndex)
 
 	CurrentWeapon = Weapons[WeaponIndex];
 	AttachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponEquipSocketName);
+	EquipAnimInProgress = true;
+	PlayAnimMontage(EquipAnimMontage);
 }
 
 void UPPWeaponComponent::StartFire()
 {
-	if (!CurrentWeapon) { return; }
+	if (!CanFire()) { return; }
 	CurrentWeapon->StartFire();
 }
 
@@ -85,6 +91,51 @@ void UPPWeaponComponent::StopFire()
 
 void UPPWeaponComponent::NextWeapon()
 {
+	if (!CanEquip()){ return; }
+
 	CurrentWeaponIndex = (CurrentWeaponIndex + 1) %Weapons.Num();
 	EquipWeapon(CurrentWeaponIndex);
 }
+
+void UPPWeaponComponent::PlayAnimMontage(UAnimMontage* AnimMontage)
+{
+	ACharacter* Character = Cast<ACharacter>(GetOwner());
+	if (!Character){ return; }
+
+	Character->PlayAnimMontage(AnimMontage);
+}
+
+void UPPWeaponComponent::InitAnimations()
+{
+	if (!EquipAnimMontage){ return; }
+	
+	const auto NotifyEvents = EquipAnimMontage->Notifies;
+	for (auto NotifyEvent: NotifyEvents)
+	{
+		auto EquipFinishNotify = Cast<UPPEquipFinishedAnimNotify>(NotifyEvent.Notify);
+		if (EquipFinishNotify)
+		{
+			EquipFinishNotify->OnNotified.AddUObject(this, &UPPWeaponComponent::OnEquipFinished);
+			break;
+		}
+	}
+}
+
+void UPPWeaponComponent::OnEquipFinished(USkeletalMeshComponent* MeshComponent)
+{
+	ACharacter* Character = Cast<ACharacter>(GetOwner());
+	if (!Character || Character->GetMesh() != MeshComponent){ return; }
+
+	EquipAnimInProgress = false;
+}
+
+bool UPPWeaponComponent::CanFire() const
+{
+	return CurrentWeapon && !EquipAnimInProgress;
+}
+
+bool UPPWeaponComponent::CanEquip() const
+{
+	return !EquipAnimInProgress;
+}
+
