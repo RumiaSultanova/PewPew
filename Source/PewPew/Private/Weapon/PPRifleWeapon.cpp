@@ -17,7 +17,7 @@ void APPRifleWeapon::StopFire()
 
 void APPRifleWeapon::MakeShot()
 {
-	if (!GetWorld()){ return; }
+	if (!GetWorld() || IsAmmoEmpty()){ return; }
 
 	FVector TraceStart, TraceEnd;
 	if (!GetTraceData(TraceStart, TraceEnd)) { return; }
@@ -35,6 +35,8 @@ void APPRifleWeapon::MakeShot()
 	{
 		DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), TraceEnd, FColor::Red, false, 3.0f, 0, 3.0f);
 	}
+
+	DecreaseAmmo();
 }
 
 bool APPRifleWeapon::GetTraceData(FVector& TraceStart, FVector& TraceEnd) const

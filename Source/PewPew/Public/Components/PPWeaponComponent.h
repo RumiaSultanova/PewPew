@@ -8,7 +8,19 @@
 
 class APPBaseWeapon;
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+USTRUCT(BlueprintType)
+struct FWeaponData
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon")
+	TSubclassOf<APPBaseWeapon> WeaponClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon")
+	UAnimMontage* ReloadAnimMontage;
+};
+
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PEWPEW_API UPPWeaponComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -19,10 +31,11 @@ public:
 	void StartFire();
 	void StopFire();
 	void NextWeapon();
+	void Reload();
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category="Weapon")
-	TArray<TSubclassOf<APPBaseWeapon>> WeaponClasses;
+	TArray<FWeaponData> WeaponData;
 
 	UPROPERTY(EditDefaultsOnly, Category="Weapon")
 	FName WeaponEquipSocketName = "WeaponSocket";
@@ -42,6 +55,9 @@ private:
 
 	UPROPERTY()
 	TArray<APPBaseWeapon*> Weapons;
+
+	UPROPERTY()
+	UAnimMontage* CurrentReloadAnimMontage = nullptr;
 
 	int32 CurrentWeaponIndex = 0;
 	bool EquipAnimInProgress = false;
