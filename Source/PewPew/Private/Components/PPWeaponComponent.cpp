@@ -4,6 +4,7 @@
 #include "Weapon/PPBaseWeapon.h"
 #include "GameFramework/Character.h"
 #include "Animations/PPEquipFinishedAnimNotify.h"
+#include "Animations/PPReloadFinishedAnimNotify.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWeaponComponent, All, All);
 
@@ -108,6 +109,9 @@ void UPPWeaponComponent::NextWeapon()
 
 void UPPWeaponComponent::Reload()
 {
+	if (!CanReload()){ return; }
+
+	ReloadAnimInProgress = true;
 	PlayAnimMontage(CurrentReloadAnimMontage);
 }
 
@@ -121,17 +125,18 @@ void UPPWeaponComponent::PlayAnimMontage(UAnimMontage* AnimMontage)
 
 void UPPWeaponComponent::InitAnimations()
 {
-	if (!EquipAnimMontage){ return; }
-	
-	const auto NotifyEvents = EquipAnimMontage->Notifies;
-	for (auto NotifyEvent: NotifyEvents)
+	auto EquipFinishedNotify = FindNotifyByClass<UPPEquipFinishedAnimNotify>(EquipAnimMontage);
+	if (EquipFinishedNotify)
 	{
-		auto EquipFinishNotify = Cast<UPPEquipFinishedAnimNotify>(NotifyEvent.Notify);
-		if (EquipFinishNotify)
-		{
-			EquipFinishNotify->OnNotified.AddUObject(this, &UPPWeaponComponent::OnEquipFinished);
-			break;
-		}
+		EquipFinishedNotify->OnNotified.AddUObject(this, &UPPWeaponComponent::OnEquipFinished);
+	}
+
+	for (auto OneWeaponData : WeaponData)
+	{
+		auto ReloadFinishedNotify = FindNotifyByClass<UPPReloadFinishedAnimNotify>(OneWeaponData.ReloadAnimMontage);
+		if (!EquipFinishedNotify){ continue; }
+
+		ReloadFinishedNotify->OnNotified.AddUObject(this, &UPPWeaponComponent::OnReloadFinished);
 	}
 }
 
@@ -143,13 +148,26 @@ void UPPWeaponComponent::OnEquipFinished(USkeletalMeshComponent* MeshComponent)
 	EquipAnimInProgress = false;
 }
 
+void UPPWeaponComponent::OnReloadFinished(USkeletalMeshComponent* MeshComponent)
+{
+	ACharacter* Character = Cast<ACharacter>(GetOwner());
+	if (!Character || Character->GetMesh() != MeshComponent){ return; }
+
+	ReloadAnimInProgress = false;
+}
+
 bool UPPWeaponComponent::CanFire() const
 {
-	return CurrentWeapon && !EquipAnimInProgress;
+	return CurrentWeapon && !EquipAnimInProgress && !ReloadAnimInProgress;
 }
 
 bool UPPWeaponComponent::CanEquip() const
 {
-	return !EquipAnimInProgress;
+	return !EquipAnimInProgress && !ReloadAnimInProgress;
+}
+
+bool UPPWeaponComponent::CanReload() const
+{
+	return CurrentWeapon && !EquipAnimInProgress && !ReloadAnimInProgress;
 }
 

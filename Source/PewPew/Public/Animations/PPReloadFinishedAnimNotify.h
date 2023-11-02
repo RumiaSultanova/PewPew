@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Animations/PPAnimNotify.h"
-#include "PPEquipFinishedAnimNotify.generated.h"
+#include "PPReloadFinishedAnimNotify.generated.h"
 
 UCLASS()
-class PEWPEW_API UPPEquipFinishedAnimNotify : public UPPAnimNotify
+class PEWPEW_API UPPReloadFinishedAnimNotify : public UPPAnimNotify
 {
 	GENERATED_BODY()
 };
