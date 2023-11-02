@@ -4,26 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "PPCoreTypes.h"
 #include "PPBaseWeapon.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnClipEmptySugnature);
-
 class USkeletalMeshComponent;
-
-USTRUCT(BlueprintType)
-struct FAmmoData
-{
-	GENERATED_USTRUCT_BODY()
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon")
-	int32 Bullets;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon", meta=(EditCondition = "!Infinite"))
-	int32 Clips;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon")
-	bool Infinite;
-};
 
 UCLASS()
 class PEWPEW_API APPBaseWeapon : public AActor

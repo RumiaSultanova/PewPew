@@ -5,8 +5,11 @@
 #include "GameFramework/Character.h"
 #include "Animations/PPEquipFinishedAnimNotify.h"
 #include "Animations/PPReloadFinishedAnimNotify.h"
+#include "Animations/AnimUtils.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWeaponComponent, All, All);
+
+constexpr static int32 WeaponNum = 2;
 
 UPPWeaponComponent::UPPWeaponComponent()
 {
@@ -16,6 +19,8 @@ UPPWeaponComponent::UPPWeaponComponent()
 void UPPWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	checkf(WeaponData.Num() == WeaponNum, TEXT("Our character can hold only %i weapon items"), WeaponNum);
 
 	CurrentWeaponIndex = 0;
 	InitAnimations();
@@ -52,7 +57,7 @@ void UPPWeaponComponent::SpawnWeapons()
 		AttachWeaponToSocket(Weapon, Character->GetMesh(), WeaponArmorySocketName);
 	}
 }
-// todo 5.21 04:10
+
 void UPPWeaponComponent::AttachWeaponToSocket(APPBaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName)
 {
 	 if (!Weapon || !SceneComponent){ return; }
@@ -123,16 +128,25 @@ void UPPWeaponComponent::PlayAnimMontage(UAnimMontage* AnimMontage)
 
 void UPPWeaponComponent::InitAnimations()
 {
-	auto EquipFinishedNotify = FindNotifyByClass<UPPEquipFinishedAnimNotify>(EquipAnimMontage);
+	auto EquipFinishedNotify = AnimUtils::FindNotifyByClass<UPPEquipFinishedAnimNotify>(EquipAnimMontage);
 	if (EquipFinishedNotify)
 	{
 		EquipFinishedNotify->OnNotified.AddUObject(this, &UPPWeaponComponent::OnEquipFinished);
 	}
+	else
+	{
+		UE_LOG(LogWeaponComponent, Error, TEXT("Equip anim notify is forgotten to set"));
+		checkNoEntry(); 
+	}
 
 	for (auto OneWeaponData : WeaponData)
 	{
-		auto ReloadFinishedNotify = FindNotifyByClass<UPPReloadFinishedAnimNotify>(OneWeaponData.ReloadAnimMontage);
-		if (!EquipFinishedNotify){ continue; }
+		auto ReloadFinishedNotify = AnimUtils::FindNotifyByClass<UPPReloadFinishedAnimNotify>(OneWeaponData.ReloadAnimMontage);
+		if (!EquipFinishedNotify)
+		{
+			UE_LOG(LogWeaponComponent, Error, TEXT("Reload anim notify is forgotten to set"));
+			checkNoEntry(); 
+		}
 
 		ReloadFinishedNotify->OnNotified.AddUObject(this, &UPPWeaponComponent::OnReloadFinished);
 	}
