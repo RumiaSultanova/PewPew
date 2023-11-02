@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "PPBaseWeapon.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnClipEmptySugnature);
+
 class USkeletalMeshComponent;
 
 USTRUCT(BlueprintType)
@@ -31,8 +33,13 @@ class PEWPEW_API APPBaseWeapon : public AActor
 public:	
 	APPBaseWeapon();
 
+	FOnClipEmptySugnature OnClipEmpty;
+
 	virtual void StartFire();
 	virtual void StopFire();
+
+	void ChangeClip();
+	bool CanReload() const;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
@@ -61,7 +68,6 @@ protected:
 	void DecreaseAmmo();
 	bool IsAmmoEmpty() const;
 	bool IsClipEmpty() const;
-	void ChangeClip();
 	void LogAmmo();
 
 private:

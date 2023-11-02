@@ -45,6 +45,7 @@ void UPPWeaponComponent::SpawnWeapons()
 		auto Weapon = GetWorld()->SpawnActor<APPBaseWeapon>(OneWeaponData.WeaponClass);
 		if (!Weapon) { continue; }
 
+		Weapon->OnClipEmpty.AddUObject(this, &UPPWeaponComponent::OnEmptyClip);
 		Weapon->SetOwner(Character);
 		Weapons.Add(Weapon);
 
@@ -109,10 +110,7 @@ void UPPWeaponComponent::NextWeapon()
 
 void UPPWeaponComponent::Reload()
 {
-	if (!CanReload()){ return; }
-
-	ReloadAnimInProgress = true;
-	PlayAnimMontage(CurrentReloadAnimMontage);
+	ChangeClip();
 }
 
 void UPPWeaponComponent::PlayAnimMontage(UAnimMontage* AnimMontage)
@@ -168,6 +166,21 @@ bool UPPWeaponComponent::CanEquip() const
 
 bool UPPWeaponComponent::CanReload() const
 {
-	return CurrentWeapon && !EquipAnimInProgress && !ReloadAnimInProgress;
+	return CurrentWeapon && !EquipAnimInProgress
+	&& !ReloadAnimInProgress && CurrentWeapon->CanReload();
+}
+
+void UPPWeaponComponent::OnEmptyClip()
+{
+	ChangeClip();
+}
+
+void UPPWeaponComponent::ChangeClip()
+{
+	if (!CanReload()){ return; }
+	CurrentWeapon->StopFire();
+	CurrentWeapon->ChangeClip();
+	ReloadAnimInProgress = true;
+	PlayAnimMontage(CurrentReloadAnimMontage);
 }
 
