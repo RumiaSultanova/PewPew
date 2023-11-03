@@ -19,7 +19,7 @@ public class PewPew : ModuleRules
 			"PewPew/Public/Dev",
 			"PewPew/Public/Weapon",
 			"PewPew/Public/UI",
-			"PewPew/Public/Animation"
+			"PewPew/Public/Animations"
 		});
 		
 		// Uncomment if you are using Slate UI

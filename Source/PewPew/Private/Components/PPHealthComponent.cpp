@@ -14,6 +14,8 @@ void UPPHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	check(MaxHealth > 0);
+
 	SetHealth(MaxHealth);
 
 	if (AActor* ComponentOwner = GetOwner())
