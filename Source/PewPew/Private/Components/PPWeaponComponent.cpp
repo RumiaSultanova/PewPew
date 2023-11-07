@@ -118,6 +118,16 @@ void UPPWeaponComponent::Reload()
 	ChangeClip();
 }
 
+bool UPPWeaponComponent::GetWeaponUIData(FWeaponUIData& UIData) const
+{
+	if (CurrentWeapon)
+	{
+		UIData = CurrentWeapon->GetUIData();
+		return true;
+	}
+	return false;
+}
+
 void UPPWeaponComponent::PlayAnimMontage(UAnimMontage* AnimMontage)
 {
 	ACharacter* Character = Cast<ACharacter>(GetOwner());

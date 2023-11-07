@@ -8,11 +8,11 @@ void APPGameHUD::DrawHUD()
 {
 	Super::DrawHUD();
 
-	DrawCrossHair();
+	// DrawCrossHair();
 }
 
 void APPGameHUD::BeginPlay()
-{
+{ 
 	Super::BeginPlay();
 	auto PlayerHUDWidget = CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass);
 	if (PlayerHUDWidget)
