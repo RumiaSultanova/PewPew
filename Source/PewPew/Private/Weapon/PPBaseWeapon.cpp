@@ -87,7 +87,6 @@ void APPBaseWeapon::DecreaseAmmo()
 	}
 
 	CurrentAmmo.Bullets--;
-	LogAmmo();
 
 	if (IsClipEmpty() && !IsAmmoEmpty())
 	{

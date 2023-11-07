@@ -7,9 +7,6 @@
 #include "PPCoreTypes.h"
 #include "PPPlayerHUDWidget.generated.h"
 
-class UPPHealthComponent;
-class UPPWeaponComponent;
-
 UCLASS()
 class PEWPEW_API UPPPlayerHUDWidget : public UUserWidget
 {
@@ -30,8 +27,4 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="UI")
 	bool IsPlayerSpectating() const;
-	
-private:
-	UPPWeaponComponent* GetWeaponComponent() const;
-	UPPHealthComponent* GetHealthComponent() const;
 };
