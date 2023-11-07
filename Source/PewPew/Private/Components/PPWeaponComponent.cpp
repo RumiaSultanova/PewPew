@@ -118,11 +118,21 @@ void UPPWeaponComponent::Reload()
 	ChangeClip();
 }
 
-bool UPPWeaponComponent::GetWeaponUIData(FWeaponUIData& UIData) const
+bool UPPWeaponComponent::GetCurrentWeaponUIData(FWeaponUIData& UIData) const
 {
 	if (CurrentWeapon)
 	{
 		UIData = CurrentWeapon->GetUIData();
+		return true;
+	}
+	return false;
+}
+
+bool UPPWeaponComponent::GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const
+{
+	if (CurrentWeapon)
+	{
+		AmmoData = CurrentWeapon->GetAmmoData();
 		return true;
 	}
 	return false;

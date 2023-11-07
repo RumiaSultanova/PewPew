@@ -15,15 +15,28 @@ float UPPPlayerHUDWidget::GetHealthPercent() const
 
 	return HealthComponent->GetHealthPercent();
 }
-
-bool UPPPlayerHUDWidget::GetWeaponUIData(FWeaponUIData& UIData) const
+ 
+bool UPPPlayerHUDWidget::GetCurrentWeaponUIData(FWeaponUIData& UIData) const
 {
-	const auto Player = GetOwningPlayerPawn();
-	if (!Player) { return false; }
-
-	const auto Component = Player->GetComponentByClass(UPPWeaponComponent::StaticClass());
-	const auto WeaponComponent = Cast<UPPWeaponComponent>(Component);
+	const auto WeaponComponent = GetWeaponComponent();
 	if (!WeaponComponent) { return false; }
 
-	return WeaponComponent->GetWeaponUIData(UIData);
+	return WeaponComponent->GetCurrentWeaponUIData(UIData);
+}
+
+bool UPPPlayerHUDWidget::GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const
+{
+	const auto WeaponComponent = GetWeaponComponent();
+	if (!WeaponComponent) { return false; }
+
+	return WeaponComponent->GetCurrentWeaponAmmoData(AmmoData);
+}
+
+UPPWeaponComponent* UPPPlayerHUDWidget::GetWeaponComponent() const
+{
+	const auto Player = GetOwningPlayerPawn();
+	if (!Player) { return nullptr; }
+
+	const auto Component = Player->GetComponentByClass(UPPWeaponComponent::StaticClass());
+	return  Cast<UPPWeaponComponent>(Component);
 }

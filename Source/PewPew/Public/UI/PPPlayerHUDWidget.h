@@ -7,6 +7,8 @@
 #include "PPCoreTypes.h"
 #include "PPPlayerHUDWidget.generated.h"
 
+class UPPWeaponComponent;
+
 UCLASS()
 class PEWPEW_API UPPPlayerHUDWidget : public UUserWidget
 {
@@ -17,5 +19,11 @@ public:
 	float GetHealthPercent() const;
 
 	UFUNCTION(BlueprintCallable, Category="UI")
-	bool GetWeaponUIData(FWeaponUIData& UIData) const;
+	bool GetCurrentWeaponUIData(FWeaponUIData& UIData) const;
+
+	UFUNCTION(BlueprintCallable, Category="UI")
+	bool GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const;
+
+private:
+	UPPWeaponComponent* GetWeaponComponent() const;
 };
