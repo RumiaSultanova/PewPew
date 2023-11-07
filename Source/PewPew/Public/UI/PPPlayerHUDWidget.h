@@ -7,6 +7,7 @@
 #include "PPCoreTypes.h"
 #include "PPPlayerHUDWidget.generated.h"
 
+class UPPHealthComponent;
 class UPPWeaponComponent;
 
 UCLASS()
@@ -24,6 +25,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category="UI")
 	bool GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const;
 
+	UFUNCTION(BlueprintCallable, Category="UI")
+	bool IsPlayerAlive() const;
+
+	UFUNCTION(BlueprintCallable, Category="UI")
+	bool IsPlayerSpectating() const;
+	
 private:
 	UPPWeaponComponent* GetWeaponComponent() const;
+	UPPHealthComponent* GetHealthComponent() const;
 };
