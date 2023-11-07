@@ -1,14 +1,24 @@
 // Pew-Pew Game. All Rights Reserved.
 
-
 #include "UI/PPGameHUD.h"
 #include "Engine/Canvas.h"
+#include "Blueprint/UserWidget.h"
 
 void APPGameHUD::DrawHUD()
 {
 	Super::DrawHUD();
 
 	DrawCrossHair();
+}
+
+void APPGameHUD::BeginPlay()
+{
+	Super::BeginPlay();
+	auto PlayerHUDWidget = CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass);
+	if (PlayerHUDWidget)
+	{
+		PlayerHUDWidget->AddToViewport();
+	}
 }
 
 void APPGameHUD::DrawCrossHair()
