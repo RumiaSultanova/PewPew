@@ -19,16 +19,43 @@ APPBasePickup::APPBasePickup()
 void APPBasePickup::BeginPlay()
 {
 	Super::BeginPlay();
+
+	check(CollisionComponent);
 }
 
 void APPBasePickup::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
-	Destroy();
+
+	const auto Pawn = Cast<APawn>(OtherActor);
+	if (GivePickupTo(Pawn))
+	{
+		PickupWasTaken();
+	}
 }
 
 void APPBasePickup::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+bool APPBasePickup::GivePickupTo(APawn* PlayerPawn)
+{
+	return false;
+}
+
+void APPBasePickup::PickupWasTaken()
+{
+	CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	GetRootComponent()->SetVisibility(false, true);
+
+	FTimerHandle RespawnTimerHandle;
+	GetWorldTimerManager().SetTimer(RespawnTimerHandle, this, &APPBasePickup::Respawn, RespawnTime);
+}
+
+void APPBasePickup::Respawn()
+{
+	CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+	GetRootComponent()->SetVisibility(true, true);
 }
 

@@ -13,5 +13,7 @@ UCLASS()
 class PEWPEW_API APPAmmoPickup : public APPBasePickup
 {
 	GENERATED_BODY()
-	
+
+private:
+	virtual bool GivePickupTo(APawn* PlayerPawn) override;
 };
