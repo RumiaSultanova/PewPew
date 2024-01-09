@@ -5,7 +5,7 @@
 //weapon
 class APPBaseWeapon;
 
-DECLARE_MULTICAST_DELEGATE(FOnClipEmptySugnature);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnClipEmptySugnature, APPBaseWeapon*);
 
 USTRUCT(BlueprintType)
 struct FAmmoData

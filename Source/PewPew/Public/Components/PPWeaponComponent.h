@@ -26,6 +26,8 @@ public:
 	bool GetCurrentWeaponUIData(FWeaponUIData& UIData) const;
 	bool GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const;
 
+	bool TryToAddAmmo(TSubclassOf<APPBaseWeapon> WeaponType, int32 ClipAmount);
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category="Weapon")
 	TArray<FWeaponData> WeaponData;
@@ -70,6 +72,6 @@ private:
 	bool CanEquip() const;
 	bool CanReload() const;
 
-	void OnEmptyClip();
+	void OnEmptyClip(APPBaseWeapon* AmmoEmptyWeapon);
 	void ChangeClip();
 };

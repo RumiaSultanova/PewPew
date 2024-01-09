@@ -118,26 +118,6 @@ void UPPWeaponComponent::Reload()
 	ChangeClip();
 }
 
-bool UPPWeaponComponent::GetCurrentWeaponUIData(FWeaponUIData& UIData) const
-{
-	if (CurrentWeapon)
-	{
-		UIData = CurrentWeapon->GetUIData();
-		return true;
-	}
-	return false;
-}
-
-bool UPPWeaponComponent::GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const
-{
-	if (CurrentWeapon)
-	{
-		AmmoData = CurrentWeapon->GetAmmoData();
-		return true;
-	}
-	return false;
-}
-
 void UPPWeaponComponent::PlayAnimMontage(UAnimMontage* AnimMontage)
 {
 	ACharacter* Character = Cast<ACharacter>(GetOwner());
@@ -204,9 +184,24 @@ bool UPPWeaponComponent::CanReload() const
 	&& !ReloadAnimInProgress && CurrentWeapon->CanReload();
 }
 
-void UPPWeaponComponent::OnEmptyClip()
+void UPPWeaponComponent::OnEmptyClip(APPBaseWeapon* AmmoEmptyWeapon)
 {
-	ChangeClip();
+	if (!AmmoEmptyWeapon){ return;  }
+
+	if (CurrentWeapon == AmmoEmptyWeapon)
+	{
+		ChangeClip();
+	}
+	else
+	{
+		for (const auto Weapon: Weapons)
+		{
+			if (Weapon == AmmoEmptyWeapon)
+			{
+				Weapon->ChangeClip();
+			}
+		}
+	}
 }
 
 void UPPWeaponComponent::ChangeClip()
@@ -218,3 +213,34 @@ void UPPWeaponComponent::ChangeClip()
 	PlayAnimMontage(CurrentReloadAnimMontage);
 }
 
+bool UPPWeaponComponent::GetCurrentWeaponUIData(FWeaponUIData& UIData) const
+{
+	if (CurrentWeapon)
+	{
+		UIData = CurrentWeapon->GetUIData();
+		return true;
+	}
+	return false;
+}
+
+bool UPPWeaponComponent::GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const
+{
+	if (CurrentWeapon)
+	{
+		AmmoData = CurrentWeapon->GetAmmoData();
+		return true;
+	}
+	return false;
+}
+
+bool UPPWeaponComponent::TryToAddAmmo(TSubclassOf<APPBaseWeapon> WeaponType, int32 ClipAmount)
+{
+	for (const auto Weapon: Weapons)
+	{
+		if(Weapon && Weapon->IsA(WeaponType))
+		{
+			return Weapon->TryToAddAmmo(ClipAmount);
+		}
+	}
+	return false;
+}
