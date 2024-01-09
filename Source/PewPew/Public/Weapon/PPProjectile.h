@@ -8,6 +8,7 @@
 
 class USphereComponent;
 class UProjectileMovementComponent;
+class UPPWeaponFXComponent;
 
 UCLASS()
 class PEWPEW_API APPProjectile : public AActor
@@ -25,6 +26,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category="Weapon")
 	UProjectileMovementComponent* MovementComponent;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+	UPPWeaponFXComponent* WeaponFXComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon")
 	float DamageRadius = 200.0f;

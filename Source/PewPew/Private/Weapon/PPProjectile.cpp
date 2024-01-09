@@ -6,6 +6,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
+#include "Weapon/Components/PPWeaponFXComponent.h"
 
 APPProjectile::APPProjectile()
 {
@@ -20,6 +21,8 @@ APPProjectile::APPProjectile()
 	MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComponent");
 	MovementComponent->InitialSpeed = 2000.0f;
 	MovementComponent->ProjectileGravityScale = 0.0;
+
+	WeaponFXComponent = CreateDefaultSubobject<UPPWeaponFXComponent>("WeaponFXComponent");
 }
 
 void APPProjectile::BeginPlay()
@@ -27,6 +30,9 @@ void APPProjectile::BeginPlay()
 	Super::BeginPlay();
 
 	check(MovementComponent);
+	check(CollisionComponent);
+	check(WeaponFXComponent);
+	
 	MovementComponent->Velocity = ShotDirection * MovementComponent->InitialSpeed;
 	CollisionComponent->IgnoreActorWhenMoving(GetOwner(), true);
 	CollisionComponent->OnComponentHit.AddDynamic(this, &APPProjectile::OnProjectileHit);
@@ -41,7 +47,8 @@ void APPProjectile::OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* O
 	// make damage
 	UGameplayStatics::ApplyRadialDamage(GetWorld(), DamageAmount, GetActorLocation(), DamageRadius, UDamageType::StaticClass(), {GetOwner()}, this, GetController(), DoFullDamage);
 
-	DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 24, FColor::Red, false, 5.0f);
+	// DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 24, FColor::Red, false, 5.0f);
+	WeaponFXComponent->PlayImpactFX(Hit);
 
 	Destroy();
 }

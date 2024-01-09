@@ -8,7 +8,14 @@ public class PewPew : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+		PublicDependencyModuleNames.AddRange(new[]
+		{
+			"Core", 
+			"CoreUObject", 
+			"Engine", 
+			"InputCore",
+			"Niagara"
+		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
@@ -20,7 +27,8 @@ public class PewPew : ModuleRules
 			"PewPew/Public/Weapon",
 			"PewPew/Public/UI",
 			"PewPew/Public/Animations",
-			"PewPew/Public/Pickups"
+			"PewPew/Public/Pickups",
+			"PewPew/Public/Weapon/Components"
 		});
 		
 		// Uncomment if you are using Slate UI
