@@ -186,7 +186,7 @@ bool UPPWeaponComponent::CanReload() const
 
 void UPPWeaponComponent::OnEmptyClip(APPBaseWeapon* AmmoEmptyWeapon)
 {
-	if (!AmmoEmptyWeapon){ return;  }
+	if (!AmmoEmptyWeapon){ return; }
 
 	if (CurrentWeapon == AmmoEmptyWeapon)
 	{

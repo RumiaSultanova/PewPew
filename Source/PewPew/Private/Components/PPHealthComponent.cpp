@@ -46,7 +46,7 @@ void UPPHealthComponent::HealUpdate()
 {
 	SetHealth(Health + HealModifier);
 
-	if (FMath::IsNearlyEqual(Health, MaxHealth) && GetWorld())
+	if (iSHealthFull() && GetWorld())
 	{
 		GetWorld()->GetTimerManager().ClearTimer(HealTimerHandle);
 	}
@@ -57,3 +57,17 @@ void UPPHealthComponent::SetHealth(float NewHealth)
 	Health = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
 	OnHealthChanged.Broadcast(Health);
 }
+
+bool UPPHealthComponent::TryToAddHealth(int32 HealthAmount)
+{
+	if (IsDead() || iSHealthFull()){ return false; }
+
+	SetHealth(Health + HealthAmount);
+	return true;
+}
+
+bool UPPHealthComponent::iSHealthFull() const
+{
+	return FMath::IsNearlyEqual(Health, MaxHealth);
+}
+
