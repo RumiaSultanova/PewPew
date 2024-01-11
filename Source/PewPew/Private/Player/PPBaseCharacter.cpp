@@ -40,7 +40,7 @@ void APPBaseCharacter::BeginPlay()
  	check(GetCharacterMovement());
  	check(GetMesh());
 
- 	OnHealthChanged(HealthComponent->GetHealth());
+ 	OnHealthChanged(HealthComponent->GetHealth(), 0.0f);
  	HealthComponent->OnDeath.AddUObject(this, &APPBaseCharacter::OnDeath);
  	HealthComponent->OnHealthChanged.AddUObject(this, &APPBaseCharacter::OnHealthChanged);
 
@@ -107,7 +107,7 @@ float APPBaseCharacter::GetMovementDirection() const
  	return CrossProduct.IsZero() ? Degrees : Degrees * FMath::Sign(CrossProduct.Z);
 }
 
-void APPBaseCharacter::OnHealthChanged(float Health)
+void APPBaseCharacter::OnHealthChanged(float Health, float HealthDelta)
 {
  	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
 }
