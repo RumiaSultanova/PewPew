@@ -37,6 +37,8 @@ void APPBaseCharacter::BeginPlay()
 
  	check(HealthComponent);
  	check(HealthTextComponent);
+ 	check(GetCharacterMovement());
+ 	check(GetMesh());
 
  	OnHealthChanged(HealthComponent->GetHealth());
  	HealthComponent->OnDeath.AddUObject(this, &APPBaseCharacter::OnDeath);
@@ -112,7 +114,7 @@ void APPBaseCharacter::OnHealthChanged(float Health)
 
 void APPBaseCharacter::OnDeath()
 {
-	PlayAnimMontage(DeathAnimMontage);
+	// PlayAnimMontage(DeathAnimMontage);
 
  	GetCharacterMovement()->DisableMovement();
 
@@ -124,6 +126,9 @@ void APPBaseCharacter::OnDeath()
  	}
  	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
  	WeaponComponent->StopFire();
+
+ 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+ 	GetMesh()->SetSimulatePhysics(true);
 }
 
 void APPBaseCharacter::OnGroundLanded(const FHitResult& Hit)
