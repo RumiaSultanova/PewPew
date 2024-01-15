@@ -4,6 +4,7 @@
 #include "Engine/World.h"
 #include "DisplayDebugHelpers.h"
 #include "Weapon/Components/PPWeaponFXComponent.h"
+#include "NiagaraComponent.h"
 
 APPRifleWeapon::APPRifleWeapon()
 {
@@ -19,6 +20,7 @@ void APPRifleWeapon::BeginPlay()
 
 void APPRifleWeapon::StartFire()
 {
+	InitMuzzleFX();
 	GetWorldTimerManager().SetTimer(ShotTimerHandle, this, &APPRifleWeapon::MakeShot, TimeBetweenShots, true);
 	MakeShot();
 }
@@ -26,6 +28,7 @@ void APPRifleWeapon::StartFire()
 void APPRifleWeapon::StopFire()
 {
 	GetWorldTimerManager().ClearTimer(ShotTimerHandle);
+	SetMuzzleFXVisibility(false);
 }
 
 void APPRifleWeapon::MakeShot()
@@ -72,4 +75,22 @@ void APPRifleWeapon::MakeDamage(const FHitResult& HitResult)
 	if (!DamagedActor){ return; }
 
 	DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPlayerController(), this);
+}
+
+void APPRifleWeapon::InitMuzzleFX()
+{
+	if (!MuzzleFXComponent)
+	{
+		MuzzleFXComponent = SpawnMuzzleFX();
+	}
+	SetMuzzleFXVisibility(true);
+}
+
+void APPRifleWeapon::SetMuzzleFXVisibility(bool Visible)
+{
+	if (MuzzleFXComponent)
+	{
+		MuzzleFXComponent->SetPaused(!Visible);
+		MuzzleFXComponent->SetVisibility(Visible, true);
+	}
 }

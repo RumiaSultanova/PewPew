@@ -7,6 +7,7 @@
 #include "PPRifleWeapon.generated.h"
 
 class UPPWeaponFXComponent;
+class UNiagaraComponent;
 
 UCLASS()
 class PEWPEW_API APPRifleWeapon : public APPBaseWeapon
@@ -38,5 +39,10 @@ protected:
 
 private:
 	FTimerHandle ShotTimerHandle;
+
+	UNiagaraComponent* MuzzleFXComponent;
+
 	void MakeDamage(const FHitResult& HitResult);
+	void InitMuzzleFX();
+	void SetMuzzleFXVisibility(bool Visible);
 };

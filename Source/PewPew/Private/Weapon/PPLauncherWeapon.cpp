@@ -39,4 +39,5 @@ void APPLauncherWeapon::MakeShot()
 	}
 
 	DecreaseAmmo();
+	SpawnMuzzleFX();
 }
