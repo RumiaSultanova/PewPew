@@ -1,8 +1,14 @@
 // Pew-Pew Game. All Rights Reserved.
 
-
 #include "AI/PPAIController.h"
 #include "AI/PPAICharacter.h"
+#include "Components/PPAIPerceptionComponent.h"
+
+APPAIController::APPAIController()
+{
+	PPAIPerceptionComponent = CreateDefaultSubobject<UPPAIPerceptionComponent>("PPAIPerceptionComponent");
+	SetPerceptionComponent(*PPAIPerceptionComponent);
+}
 
 void APPAIController::OnPossess(APawn* InPawn)
 {
@@ -13,4 +19,11 @@ void APPAIController::OnPossess(APawn* InPawn)
 	{
 		RunBehaviorTree(PPCharacter->BehaviourTreeAsset);
 	}
+}
+
+void APPAIController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	const auto AimActor = PPAIPerceptionComponent->GetClosestEnemy();
+	SetFocus(AimActor);
 }

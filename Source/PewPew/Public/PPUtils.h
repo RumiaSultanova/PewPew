@@ -4,7 +4,7 @@ class PPUtils
 {
 public:
 	template<typename T>
-	static T* GetPPPlayerComponent(APawn* PlayerPawn)
+	static T* GetPPPlayerComponent(AActor* PlayerPawn)
 	{
 		if (!PlayerPawn) { return nullptr; }
 
