@@ -6,12 +6,11 @@
 #include "AIController.h"
 #include "PPAIController.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class PEWPEW_API APPAIController : public AAIController
 {
 	GENERATED_BODY()
-	
+
+protected:
+	virtual void OnPossess(APawn* InPawn) override;
 };
