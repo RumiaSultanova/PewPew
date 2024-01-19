@@ -32,7 +32,8 @@ public class PewPew : ModuleRules
 			"PewPew/Public/Animations",
 			"PewPew/Public/Pickups",
 			"PewPew/Public/Weapon/Components",
-			"PewPew/Public/AI"
+			"PewPew/Public/AI",
+			"PewPewPublic/AI/Services"
 		});
 		
 		// Uncomment if you are using Slate UI

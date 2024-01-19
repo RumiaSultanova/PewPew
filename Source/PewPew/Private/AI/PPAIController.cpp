@@ -3,6 +3,7 @@
 #include "AI/PPAIController.h"
 #include "AI/PPAICharacter.h"
 #include "Components/PPAIPerceptionComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 APPAIController::APPAIController()
 {
@@ -24,6 +25,12 @@ void APPAIController::OnPossess(APawn* InPawn)
 void APPAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	const auto AimActor = PPAIPerceptionComponent->GetClosestEnemy();
+	const auto AimActor = GetFocusOnActor();
 	SetFocus(AimActor);
+}
+
+AActor* APPAIController::GetFocusOnActor() const
+{
+	if (!GetBlackboardComponent()) { return nullptr; }
+	return Cast<AActor>(GetBlackboardComponent()->GetValueAsObject(FocusOnKeyName));
 }
