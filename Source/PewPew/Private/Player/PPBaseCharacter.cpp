@@ -10,7 +10,8 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Controller.h"
 
- APPBaseCharacter::APPBaseCharacter(const FObjectInitializer& ObjInit) : Super(ObjInit.SetDefaultSubobjectClass<UPPCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
+ APPBaseCharacter::APPBaseCharacter(const FObjectInitializer& ObjInit)
+:Super(ObjInit.SetDefaultSubobjectClass<UPPCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	PrimaryActorTick.bCanEverTick = true;
 
