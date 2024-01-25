@@ -33,7 +33,8 @@ public class PewPew : ModuleRules
 			"PewPew/Public/Pickups",
 			"PewPew/Public/Weapon/Components",
 			"PewPew/Public/AI",
-			"PewPewPublic/AI/Services"
+			"PewPew/Public/AI/Services",
+			"PewPew/Public/AI/EQS"
 		});
 		
 		// Uncomment if you are using Slate UI
