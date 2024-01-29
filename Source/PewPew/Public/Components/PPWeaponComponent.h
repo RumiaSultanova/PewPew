@@ -6,6 +6,7 @@
 #include "PPBaseWeapon.h"
 #include "Components/ActorComponent.h"
 #include "PPCoreTypes.h"
+#include "Decorators/PPNeedAmmoDecorator.h"
 #include "PPWeaponComponent.generated.h"
 
 class APPBaseWeapon;
@@ -27,6 +28,7 @@ public:
 	bool GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const;
 
 	bool TryToAddAmmo(TSubclassOf<APPBaseWeapon> WeaponType, int32 ClipAmount);
+	bool NeedAmmo(TSubclassOf<APPBaseWeapon> WeaponType);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category="Weapon")

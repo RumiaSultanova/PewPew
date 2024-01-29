@@ -244,3 +244,15 @@ bool UPPWeaponComponent::TryToAddAmmo(TSubclassOf<APPBaseWeapon> WeaponType, int
 	}
 	return false;
 }
+
+bool UPPWeaponComponent::NeedAmmo(TSubclassOf<APPBaseWeapon> WeaponType)
+{
+	for (const auto Weapon: Weapons)
+	{
+		if(Weapon && Weapon->IsA(WeaponType))
+		{
+			return !Weapon->IsAmmoFull();
+		}
+	}
+	return false;
+}
