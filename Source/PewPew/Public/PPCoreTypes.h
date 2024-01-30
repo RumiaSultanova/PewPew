@@ -37,7 +37,7 @@ struct FWeaponData
 USTRUCT(BlueprintType)
 struct FWeaponUIData
 {
-	GENERATED_BODY()
+	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="UI")
 	UTexture2D* MainIcon;
@@ -55,10 +55,10 @@ DECLARE_MULTICAST_DELEGATE_TwoParams(FOnHealthChangedSignature, float, float);
 
 class UNiagaraSystem;
 
-USTRUCT(Blueprintable)
+USTRUCT(BlueprintType)
 struct FDecalData
 {
-	GENERATED_BODY()
+	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
 	UMaterialInterface* Material;
@@ -73,14 +73,23 @@ struct FDecalData
 	float FadeOutTime = 0.7f;
 };
 
-USTRUCT(Blueprintable)
+USTRUCT(BlueprintType)
 struct FImpactData
 {
-	GENERATED_BODY()
+	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
 	UNiagaraSystem* NiagaraEffect;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
 	FDecalData DecalData;
+};
+
+USTRUCT(BlueprintType)
+struct FGameData
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game", meta = (ClampMin = "1", ClampMax = "100"))
+	int32 PlayersNum = 2;
 };
