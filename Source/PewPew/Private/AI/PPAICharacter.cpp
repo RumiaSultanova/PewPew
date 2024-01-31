@@ -9,7 +9,7 @@
 APPAICharacter::APPAICharacter(const FObjectInitializer& ObjInit)
 :Super(ObjInit.SetDefaultSubobjectClass<UPPAIWeaponComponent>("WeaponComponent"))
 {
-	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	AutoPossessAI = EAutoPossessAI::Disabled;
 	AIControllerClass = APPAIController::StaticClass();
 
 	bUseControllerRotationYaw = false;

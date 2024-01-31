@@ -9,6 +9,8 @@ APPAIController::APPAIController()
 {
 	PPAIPerceptionComponent = CreateDefaultSubobject<UPPAIPerceptionComponent>("PPAIPerceptionComponent");
 	SetPerceptionComponent(*PPAIPerceptionComponent);
+
+	bWantsPlayerState = true;
 }
 
 void APPAIController::OnPossess(APawn* InPawn)
