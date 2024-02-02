@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PPPlayerState.h"
 #include "GameFramework/Character.h"
 #include "PPBaseCharacter.generated.h"
 
@@ -49,6 +50,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Damage")
 	FVector2D LandedDamage = FVector2D(10.0f, 100.0f);
 
+	UPROPERTY(EditDefaultsOnly, Category="Material")
+	FName MaterialColorName = "Paint Color";
+
 	virtual void BeginPlay() override;
 	virtual void OnDeath();
 
@@ -62,6 +66,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	void SetPlayerColor(const FLinearColor& Color);
 
 private:
 	bool WantsToRun = false;

@@ -72,6 +72,14 @@ void APPBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComponent, &UPPWeaponComponent::Reload);
 }
 
+void APPBaseCharacter::SetPlayerColor(const FLinearColor& Color)
+{
+ 	const auto MaterialInst = GetMesh()->CreateAndSetMaterialInstanceDynamic(0);
+ 	if (!MaterialInst){ return; }
+
+ 	MaterialInst->SetVectorParameterValue(MaterialColorName, Color);
+}
+
 void APPBaseCharacter::MoveForward(float Amount)
 {
 	IsMovingForward = Amount > 0.0f;
