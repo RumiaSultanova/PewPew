@@ -36,20 +36,13 @@ void APPBaseWeapon::StopFire(){}
 
 void APPBaseWeapon::MakeShot(){}
 
-APlayerController* APPBaseWeapon::GetPlayerController() const
-{
-	const auto Player = Cast<ACharacter>(GetOwner());
-	if(!Player) { return nullptr; }
-
-	return  Player->GetController<APlayerController>();
-}
 
 bool APPBaseWeapon::GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotation) const
 {
 	const auto PPCharacter = Cast<ACharacter>(GetOwner());
 	if (PPCharacter->IsPlayerControlled())
 	{
-		const auto Controller = GetPlayerController();
+		const auto Controller = PPCharacter->GetController<APlayerController>();
 		if (!Controller) { return false; }
 		Controller->GetPlayerViewPoint(ViewLocation, ViewRotation);
 	}

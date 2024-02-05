@@ -7,6 +7,7 @@
 #include "Engine/World.h"
 #include "TimerManager.h"
 #include "Camera/CameraShakeBase.h"
+#include "PewPewGameModeBase.h"
 
 UPPHealthComponent::UPPHealthComponent()
 {
@@ -37,6 +38,7 @@ void UPPHealthComponent::OnTakeAnyDamage(AActor* DamageActor, float Damage, cons
 
 	if (IsDead())
 	{
+		Killed(InstigatedBy);
 		OnDeath.Broadcast();
 	}
 	else if (AutoHeal)
@@ -90,4 +92,17 @@ void UPPHealthComponent::PlayCameraShake()
 	if (!Controller || !Controller->PlayerCameraManager) { return; }
 
 	Controller->PlayerCameraManager->StartCameraShake(CameraShake);
+}
+
+void UPPHealthComponent::Killed(AController* KillerController)
+{
+	if (!GetWorld()) { return; }
+	
+	const auto GameMode = Cast<APewPewGameModeBase>(GetWorld()->GetAuthGameMode());
+	if (!GameMode) { return; }
+
+	const auto Player = Cast<APawn>(GetOwner());
+	const auto VictimController = Player ? Player->Controller : nullptr;
+
+	GameMode->Killed(KillerController, VictimController);
 }

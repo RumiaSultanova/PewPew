@@ -82,6 +82,7 @@ void APewPewGameModeBase::GameTimerUpdate()
 	    else
 	    {
 		    UE_LOG(LogPPGameModeBase, Display, TEXT("GAME OVER"))
+	    	LogPlayerInfo(); 
 	    }
  	}
 }
@@ -150,4 +151,36 @@ void APewPewGameModeBase::SetPlayerColor(AController* Controller)
 
  	Character->SetPlayerColor(PlayerState->GetTeamColor());
 
+}
+
+void APewPewGameModeBase::Killed(AController* KillerController, AController* VictimController)
+{
+	const auto KillerPlayerState = KillerController ? Cast<APPPlayerState>(KillerController->PlayerState) : nullptr; 	
+	const auto VictimPlayerState = VictimController ? Cast<APPPlayerState>(VictimController->PlayerState) : nullptr; 	
+
+	if (KillerPlayerState)
+	{
+		KillerPlayerState->AddKill();
+	}
+
+ 	if (VictimPlayerState)
+ 	{
+ 		VictimPlayerState->AddDeath();
+ 	}
+}
+
+void APewPewGameModeBase::LogPlayerInfo()
+{
+	if (!GetWorld()) { return; }
+ 	
+ 	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
+ 	{
+ 		const auto Controller = It->Get();
+ 		if (!Controller) { continue; }
+
+ 		const auto PlayerState = Cast<APPPlayerState>(Controller->PlayerState);
+ 		if (!PlayerState) { continue; }
+
+ 		PlayerState->LogInfo();
+ 	}
 }
