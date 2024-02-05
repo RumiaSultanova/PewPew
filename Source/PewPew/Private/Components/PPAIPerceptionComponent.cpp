@@ -24,10 +24,15 @@ AActor* UPPAIPerceptionComponent::GetClosestEnemy() const
 	for (const auto PerceiveActor: PerceiveActors)
 	{
 		const auto HealthComponent = PPUtils::GetPPPlayerComponent<UPPHealthComponent>(PerceiveActor);
-		const auto HealthComp = PerceiveActor->FindComponentByClass<UPPHealthComponent>();
-		if (HealthComponent && !HealthComponent->IsDead()) // todo: check if enemy or not
+		//const auto HealthComp = PerceiveActor->FindComponentByClass<UPPHealthComponent>();
+
+		const auto PerceivePawn = Cast<APawn>(PerceiveActor);
+		const auto AreEnemies = PerceivePawn && PPUtils::AreEnemies(Controller, PerceivePawn->Controller);
+
+		if (HealthComponent && !HealthComponent->IsDead() && AreEnemies)
 		{
 			const auto CurrentDistance = (PerceiveActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
+
 			if (CurrentDistance < BestDistance)
 			{
 				BestDistance = CurrentDistance;
