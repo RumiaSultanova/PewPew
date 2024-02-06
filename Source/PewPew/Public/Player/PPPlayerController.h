@@ -6,12 +6,17 @@
 #include "GameFramework/PlayerController.h"
 #include "PPPlayerController.generated.h"
 
-/**
- * 
- */
+class UPPRespawnComponent;
+
 UCLASS()
 class PEWPEW_API APPPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
+
+public:
+	APPPlayerController();
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	UPPRespawnComponent* RespawnComponent;
 };

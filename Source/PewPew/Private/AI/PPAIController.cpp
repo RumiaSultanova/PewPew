@@ -1,8 +1,11 @@
 // Pew-Pew Game. All Rights Reserved.
 
 #include "AI/PPAIController.h"
+
+#include "PPRespawnComponent.h"
 #include "AI/PPAICharacter.h"
 #include "Components/PPAIPerceptionComponent.h"
+#include "Components/PPRespawnComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 APPAIController::APPAIController()
@@ -10,6 +13,8 @@ APPAIController::APPAIController()
 	PPAIPerceptionComponent = CreateDefaultSubobject<UPPAIPerceptionComponent>("PPAIPerceptionComponent");
 	SetPerceptionComponent(*PPAIPerceptionComponent);
 
+	RespawnComponent = CreateDefaultSubobject<UPPRespawnComponent>("RespawnComponent");
+	
 	bWantsPlayerState = true;
 }
 

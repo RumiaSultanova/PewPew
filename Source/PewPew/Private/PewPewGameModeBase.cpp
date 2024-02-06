@@ -8,8 +8,12 @@
 #include "UI/PPGameHUD.h"
 #include "AIController.h"
 #include "Player/PPPlayerState.h"
+#include "PPUtils.h"
+#include "Components/PPRespawnComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogPPGameModeBase, All, All);
+
+constexpr  static int32 MinRoundTimeForRespawn = 10;
 
  APewPewGameModeBase::APewPewGameModeBase()
 {
@@ -123,8 +127,10 @@ void APewPewGameModeBase::CreateTeamsInfo()
 		PlayerState->SetTeamID(TeamID);
  		PlayerState->SetTeamColor(DetermineColorByTeamID(TeamID));
 		SetPlayerColor(Controller);
- 		
- 		TeamID = (TeamID + 1) % GameData.TeamColors.Num();
+
+ 		auto TeamsCount = GameData.TeamColors.Num();
+ 		if (TeamsCount == 0) { TeamsCount = 2; }
+ 		TeamID = (TeamID + 1) % TeamsCount;
  	}
 }
 
@@ -167,6 +173,8 @@ void APewPewGameModeBase::Killed(AController* KillerController, AController* Vic
  	{
  		VictimPlayerState->AddDeath();
  	}
+
+ 	StartRespawn(VictimController);
 }
 
 void APewPewGameModeBase::LogPlayerInfo()
@@ -183,4 +191,20 @@ void APewPewGameModeBase::LogPlayerInfo()
 
  		PlayerState->LogInfo();
  	}
+}
+
+void APewPewGameModeBase::StartRespawn(AController* Controller)
+{
+ 	const auto RespawnAvailable = RoundCountDown > MinRoundTimeForRespawn + GameData.RespawnTime;
+ 	if (!RespawnAvailable) { return; }
+ 	
+ 	const auto RespawnComponent = PPUtils::GetPPPlayerComponent<UPPRespawnComponent>(Controller);
+ 	if (!RespawnComponent) { return; }
+
+ 	RespawnComponent->Respawn(GameData.RespawnTime);
+}
+
+void APewPewGameModeBase::RespawnRequest(AController* Controller)
+{
+	ResetOnePlayer(Controller);
 }

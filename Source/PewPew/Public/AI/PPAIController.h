@@ -7,6 +7,7 @@
 #include "PPAIController.generated.h"
 
 class UPPAIPerceptionComponent;
+class UPPRespawnComponent;
 
 UCLASS()
 class PEWPEW_API APPAIController : public AAIController
@@ -19,6 +20,9 @@ public:
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UPPAIPerceptionComponent* PPAIPerceptionComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	UPPRespawnComponent* RespawnComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 	FName FocusOnKeyName = "EnemyActor";
