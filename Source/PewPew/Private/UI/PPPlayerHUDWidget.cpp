@@ -7,10 +7,10 @@
 
  bool UPPPlayerHUDWidget::Initialize()
 {
-	const auto HealthComponent = PPUtils::GetPPPlayerComponent<UPPHealthComponent>(GetOwningPlayerPawn());
-	if (HealthComponent)
+	if (GetOwningPlayer())
 	{
-		HealthComponent->OnHealthChanged.AddUObject(this, &UPPPlayerHUDWidget::OnHealthChanged);
+		GetOwningPlayer()->GetOnNewPawnNotifier().AddUObject(this, &UPPPlayerHUDWidget::OnNewPawn);
+		OnNewPawn(GetOwningPlayerPawn());
 	}
 
 	return Super::Initialize();
@@ -58,4 +58,13 @@ bool UPPPlayerHUDWidget::IsPlayerSpectating() const
 {
 	const auto Controller = GetOwningPlayer();
 	return Controller && Controller->StateName == NAME_Spectating;
+}
+
+void UPPPlayerHUDWidget::OnNewPawn(APawn* NewPawn)
+{
+ 	const auto HealthComponent = PPUtils::GetPPPlayerComponent<UPPHealthComponent>(NewPawn);
+ 	if (HealthComponent && !HealthComponent->OnHealthChanged.IsBoundToObject(this))
+ 	{
+ 		HealthComponent->OnHealthChanged.AddUObject(this, &UPPPlayerHUDWidget::OnHealthChanged);
+ 	}
 }
