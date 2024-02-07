@@ -10,6 +10,7 @@
 #include "Player/PPPlayerState.h"
 #include "PPUtils.h"
 #include "Components/PPRespawnComponent.h"
+#include "EngineUtils.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogPPGameModeBase, All, All);
 
@@ -85,8 +86,7 @@ void APewPewGameModeBase::GameTimerUpdate()
  		}
 	    else
 	    {
-		    UE_LOG(LogPPGameModeBase, Display, TEXT("GAME OVER"))
-	    	LogPlayerInfo(); 
+	    	GameOver();
 	    }
  	}
 }
@@ -207,4 +207,19 @@ void APewPewGameModeBase::StartRespawn(AController* Controller)
 void APewPewGameModeBase::RespawnRequest(AController* Controller)
 {
 	ResetOnePlayer(Controller);
+}
+
+void APewPewGameModeBase::GameOver()
+{
+ 	UE_LOG(LogPPGameModeBase, Display, TEXT("GAME OVER"))
+ 	LogPlayerInfo();
+
+ 	for (auto Pawn: TActorRange<APawn>(GetWorld()))
+ 	{
+ 		if (Pawn)
+ 		{
+ 			Pawn->TurnOff();
+ 			Pawn->DisableInput(nullptr);
+ 		}
+ 	}
 }
