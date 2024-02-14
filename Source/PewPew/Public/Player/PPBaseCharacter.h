@@ -7,10 +7,7 @@
 #include "GameFramework/Character.h"
 #include "PPBaseCharacter.generated.h"
 
-class UTextRenderComponent;
 class UPPHealthComponent;
-class USpringArmComponent;
-class UCameraComponent;
 class UPPWeaponComponent;
 
 UCLASS()
@@ -19,21 +16,11 @@ class PEWPEW_API APPBaseCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	APPBaseCharacter(const FObjectInitializer& ObjInit);
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
-	USpringArmComponent* SpringArmComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
-	UCameraComponent* CameraComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
 	UPPHealthComponent* HealthComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
-	UTextRenderComponent* HealthTextComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
 	UPPWeaponComponent* WeaponComponent;
@@ -58,28 +45,18 @@ protected:
 
 public:	
 	UFUNCTION(BlueprintCallable, Category="Movement")
-	bool IsRunning() const;
+	virtual bool IsRunning() const;
 
 	UFUNCTION(BlueprintCallable, Category="Movement")
 	float GetMovementDirection() const;
 
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void SetPlayerColor(const FLinearColor& Color);
 
 private:
-	bool WantsToRun = false;
-	bool IsMovingForward = false;
-
 	UFUNCTION()
 	void OnGroundLanded(const FHitResult& Hit);
-
-	void MoveForward(float Amount);
-	void MoveRight(float Amount);
-
-	void OnStartRunning();
-	void OnStopRunning();
 
 	void OnHealthChanged(float Health, float HealthDelta);
 };
