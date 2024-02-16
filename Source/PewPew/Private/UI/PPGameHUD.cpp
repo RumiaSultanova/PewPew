@@ -3,6 +3,7 @@
 #include "UI/PPGameHUD.h"
 #include "Engine/Canvas.h"
 #include "Blueprint/UserWidget.h"
+#include "PewPewGameModeBase.h"
 
 void APPGameHUD::DrawHUD()
 {
@@ -19,6 +20,15 @@ void APPGameHUD::BeginPlay()
 	{
 		PlayerHUDWidget->AddToViewport();
 	}
+
+	if (GetWorld())
+	{
+		const auto GameMode = Cast<APewPewGameModeBase>(GetWorld()->GetAuthGameMode());
+		if (GameMode)
+		{
+			GameMode->OnMatchStateChanged.AddUObject(this, &APPGameHUD::OnMatchStateChanged);
+		}
+	}
 }
 
 void APPGameHUD::DrawCrossHair()
@@ -31,4 +41,8 @@ void APPGameHUD::DrawCrossHair()
 	
 	DrawLine(Center.Min - HalfLineSize, Center.Max, Center.Min + HalfLineSize, Center.Max, LineColor, LineThickness);
 	DrawLine(Center.Min, Center.Max - HalfLineSize, Center.Min, Center.Max + HalfLineSize, LineColor, LineThickness);
+}
+
+void APPGameHUD::OnMatchStateChanged(EPPMatchState State)
+{
 }

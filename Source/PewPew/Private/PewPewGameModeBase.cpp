@@ -33,6 +33,8 @@ void APewPewGameModeBase::StartPlay()
 
  	CurrentRound = 1;
  	StartRound();
+ 	
+ 	SetMatchState(EPPMatchState::InProgress);
 }
 
 UClass* APewPewGameModeBase::GetDefaultPawnClassForController_Implementation(AController* InController)
@@ -222,4 +224,14 @@ void APewPewGameModeBase::GameOver()
  			Pawn->DisableInput(nullptr);
  		}
  	}
+
+ 	SetMatchState(EPPMatchState::GameOver);
+}
+
+void APewPewGameModeBase::SetMatchState(EPPMatchState State)
+{
+ 	if (MatchState == State){ return; }
+
+ 	MatchState = State;
+ 	OnMatchStateChanged.Broadcast(MatchState);
 }

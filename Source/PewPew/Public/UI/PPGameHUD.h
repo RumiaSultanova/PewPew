@@ -4,11 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "PPCoreTypes.h"
 #include "PPGameHUD.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class PEWPEW_API APPGameHUD : public AHUD
 {
@@ -25,4 +23,5 @@ protected:
 
 private:
 	void DrawCrossHair();
+	void OnMatchStateChanged(EPPMatchState State);
 };
