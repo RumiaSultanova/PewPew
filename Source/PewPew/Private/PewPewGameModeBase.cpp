@@ -211,6 +211,30 @@ void APewPewGameModeBase::RespawnRequest(AController* Controller)
 	ResetOnePlayer(Controller);
 }
 
+bool APewPewGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate)
+{
+	const auto PauseSet = Super::SetPause(PC, CanUnpauseDelegate);
+
+ 	if (PauseSet)
+ 	{
+ 		SetMatchState(EPPMatchState::Pause);
+ 	}
+ 	
+	return PauseSet;
+}
+
+bool APewPewGameModeBase::ClearPause()
+{
+ 	const auto PauseCleared = Super::ClearPause();
+
+ 	if (PauseCleared)
+ 	{
+ 		SetMatchState(EPPMatchState::InProgress);
+ 	}
+ 	
+ 	return PauseCleared;
+}
+
 void APewPewGameModeBase::GameOver()
 {
  	UE_LOG(LogPPGameModeBase, Display, TEXT("GAME OVER"))

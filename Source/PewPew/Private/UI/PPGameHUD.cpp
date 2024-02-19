@@ -15,12 +15,19 @@ void APPGameHUD::DrawHUD()
 void APPGameHUD::BeginPlay()
 { 
 	Super::BeginPlay();
-	auto PlayerHUDWidget = CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass);
-	if (PlayerHUDWidget)
-	{
-		PlayerHUDWidget->AddToViewport();
-	}
 
+	GameWidgets.Add(EPPMatchState::InProgress, CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass));
+	GameWidgets.Add(EPPMatchState::Pause, CreateWidget<UUserWidget>(GetWorld(), PauseWidgetClass));
+
+	for (auto GameWidgetPair: GameWidgets)
+	{
+		const auto GameWidget = GameWidgetPair.Value;
+		if (!GameWidget) { continue; }
+
+		GameWidget->AddToViewport();
+		GameWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
+	
 	if (GetWorld())
 	{
 		const auto GameMode = Cast<APewPewGameModeBase>(GetWorld()->GetAuthGameMode());
@@ -45,4 +52,14 @@ void APPGameHUD::DrawCrossHair()
 
 void APPGameHUD::OnMatchStateChanged(EPPMatchState State)
 {
+	if (CurrentWidget)
+	{
+		CurrentWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	if (GameWidgets.Contains(State))
+	{
+		CurrentWidget = GameWidgets[State];
+		CurrentWidget->SetVisibility(ESlateVisibility::Visible);
+	}
 }
