@@ -18,6 +18,7 @@ void APPGameHUD::BeginPlay()
 
 	GameWidgets.Add(EPPMatchState::InProgress, CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass));
 	GameWidgets.Add(EPPMatchState::Pause, CreateWidget<UUserWidget>(GetWorld(), PauseWidgetClass));
+	GameWidgets.Add(EPPMatchState::GameOver, CreateWidget<UUserWidget>(GetWorld(), GameOverWidgetClass));
 
 	for (auto GameWidgetPair: GameWidgets)
 	{
