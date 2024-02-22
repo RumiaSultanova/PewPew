@@ -128,6 +128,7 @@ void APewPewGameModeBase::CreateTeamsInfo()
 
 		PlayerState->SetTeamID(TeamID);
  		PlayerState->SetTeamColor(DetermineColorByTeamID(TeamID));
+ 		PlayerState->SetPlayerName(Controller->IsPlayerController() ? "Player" : "Bot");
 		SetPlayerColor(Controller);
 
  		auto TeamsCount = GameData.TeamColors.Num();
