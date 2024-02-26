@@ -6,9 +6,13 @@
 #include "Components/VerticalBox.h"
 #include "Player/PPPlayerState.h"
 #include "UI/PPPlayerStatRowWidget.h"
+#include "Components/Button.h"
+#include "Kismet/GameplayStatics.h"
 
-bool UPPGameOverWidget::Initialize()
+void UPPGameOverWidget::NativeOnInitialized()
 {
+	Super::NativeOnInitialized();
+	
 	if (GetWorld())
 	{
 		const auto GameMode = Cast<APewPewGameModeBase>(GetWorld()->GetAuthGameMode());
@@ -18,7 +22,10 @@ bool UPPGameOverWidget::Initialize()
 		}
 	}
 	
-	return Super::Initialize();
+	if (ResetLevelButton)
+	{
+	    ResetLevelButton->OnClicked.AddDynamic(this, &UPPGameOverWidget::OnResetLevel);
+	}
 }
 
 void UPPGameOverWidget::OnMatchStateChanged(EPPMatchState State)
@@ -54,4 +61,10 @@ void UPPGameOverWidget::UpdatePlayerStat()
 
 		PlayerStatBox->AddChild(PlayerStatRowWidget);
 	}
+}
+
+void UPPGameOverWidget::OnResetLevel()
+{
+    const FName CurrentLevelName = "TestLevel";
+    UGameplayStatics::OpenLevel(this, CurrentLevelName);
 }

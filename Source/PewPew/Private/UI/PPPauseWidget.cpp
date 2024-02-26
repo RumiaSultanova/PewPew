@@ -4,16 +4,14 @@
 #include "GameFramework/GameModeBase.h"
 #include "Components/Button.h"
 
-bool UPPPauseWidget::Initialize()
+void UPPPauseWidget::NativeOnInitialized()
 {
-	const auto InitStatus = Super::Initialize();
+	Super::NativeOnInitialized();
 
 	if (ClearPauseButton)
 	{
 		ClearPauseButton->OnClicked.AddDynamic(this, &UPPPauseWidget::OnClearPause);
 	}
-
-	return InitStatus;
 }
 
 void UPPPauseWidget::OnClearPause()

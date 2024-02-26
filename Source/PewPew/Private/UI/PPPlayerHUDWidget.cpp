@@ -5,15 +5,15 @@
 #include "Components/PPWeaponComponent.h"
 #include "PPUtils.h"
 
- bool UPPPlayerHUDWidget::Initialize()
+ void UPPPlayerHUDWidget::NativeOnInitialized()
 {
+    Super::NativeOnInitialized();
+	
 	if (GetOwningPlayer())
 	{
 		GetOwningPlayer()->GetOnNewPawnNotifier().AddUObject(this, &UPPPlayerHUDWidget::OnNewPawn);
 		OnNewPawn(GetOwningPlayerPawn());
 	}
-
-	return Super::Initialize();
 }
 
 void UPPPlayerHUDWidget::OnHealthChanged(float Health, float HealthDelta)
