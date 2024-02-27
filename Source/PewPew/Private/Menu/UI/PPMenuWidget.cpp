@@ -3,6 +3,9 @@
 #include "Menu/UI/PPMenuWidget.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
+#include "PPGameInstance.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogPPMenuWidget, All, All)
 
 void UPPMenuWidget::NativeOnInitialized()
 {
@@ -16,6 +19,16 @@ void UPPMenuWidget::NativeOnInitialized()
 
 void UPPMenuWidget::OnStartGame()
 {
-	const FName StartupLevelName = "TestLevel";
-	UGameplayStatics::OpenLevel(this, StartupLevelName);
+	if (!GetWorld()) { return; }
+
+	const auto PPGameInstance = GetWorld()->GetGameInstance<UPPGameInstance>();
+	if (!PPGameInstance){ return; }
+
+	if (PPGameInstance->GetStartupLevelName().IsNone())
+	{
+		UE_LOG(LogPPMenuWidget, Error, TEXT("Level name is NONE"));
+		return;
+	}
+	
+	UGameplayStatics::OpenLevel(this, PPGameInstance->GetStartupLevelName());
 }
