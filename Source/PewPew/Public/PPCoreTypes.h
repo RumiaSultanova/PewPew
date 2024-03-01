@@ -136,4 +136,4 @@ struct FLevelData
 	UTexture2D* LevelThumb;
 };
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnLevelSelectedSignature, FLevelData&);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnLevelSelectedSignature, const FLevelData&);

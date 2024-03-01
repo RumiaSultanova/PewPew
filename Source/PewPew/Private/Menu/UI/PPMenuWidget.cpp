@@ -57,7 +57,7 @@ void UPPMenuWidget::InitLevelElements()
 		if (!LevelElementWidget) { continue; }
 
 		LevelElementWidget->SetLevelData(LevelData);
-		//LevelElementWidget->OnLevelSelected.AddUObject(this, &UPPMenuWidget::OnLevelSelected); todo
+		LevelElementWidget->OnLevelSelected.AddUObject(this, &UPPMenuWidget::OnLevelSelected); 
 
 		LevelElementsBox->AddChild(LevelElementWidget);
 		LevelElementWidgets.Add(LevelElementWidget);
