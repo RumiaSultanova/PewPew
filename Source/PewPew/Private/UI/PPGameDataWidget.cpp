@@ -4,18 +4,6 @@
 #include "PewPewGameModeBase.h"
 #include "Player/PPPlayerState.h"
 
-int32 UPPGameDataWidget::GetKillsNum() const
-{
-	const auto PlayerState = GetPPPlayerState();
-	return PlayerState ? PlayerState->GetKillsNum() : 0;
-}
-
-int32 UPPGameDataWidget::GetDeathsNum() const
-{
-	const auto PlayerState = GetPPPlayerState();
-	return PlayerState ? PlayerState->GetDeathNum() : 0;
-}
-
 int32 UPPGameDataWidget::GetCurrentRoundNum() const
 {
 	const auto GameMode = GetPPGameMode();
