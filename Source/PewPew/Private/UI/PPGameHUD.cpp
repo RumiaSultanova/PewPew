@@ -2,7 +2,7 @@
 
 #include "UI/PPGameHUD.h"
 #include "Engine/Canvas.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/PPBaseWidget.h"
 #include "PewPewGameModeBase.h"
 
 void APPGameHUD::DrawHUD()
@@ -16,9 +16,9 @@ void APPGameHUD::BeginPlay()
 { 
 	Super::BeginPlay();
 
-	GameWidgets.Add(EPPMatchState::InProgress, CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass));
-	GameWidgets.Add(EPPMatchState::Pause, CreateWidget<UUserWidget>(GetWorld(), PauseWidgetClass));
-	GameWidgets.Add(EPPMatchState::GameOver, CreateWidget<UUserWidget>(GetWorld(), GameOverWidgetClass));
+	GameWidgets.Add(EPPMatchState::InProgress, CreateWidget<UPPBaseWidget>(GetWorld(), PlayerHUDWidgetClass));
+	GameWidgets.Add(EPPMatchState::Pause, CreateWidget<UPPBaseWidget>(GetWorld(), PauseWidgetClass));
+	GameWidgets.Add(EPPMatchState::GameOver, CreateWidget<UPPBaseWidget>(GetWorld(), GameOverWidgetClass));
 
 	for (auto GameWidgetPair: GameWidgets)
 	{
@@ -61,6 +61,11 @@ void APPGameHUD::OnMatchStateChanged(EPPMatchState State)
 	if (GameWidgets.Contains(State))
 	{
 		CurrentWidget = GameWidgets[State];
+	}
+
+	if (CurrentWidget)
+	{
 		CurrentWidget->SetVisibility(ESlateVisibility::Visible);
+		CurrentWidget->Show();
 	}
 }

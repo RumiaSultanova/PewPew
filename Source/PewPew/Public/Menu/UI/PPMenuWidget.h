@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/PPBaseWidget.h"
 #include "PPCoreTypes.h"
 #include "PPMenuWidget.generated.h"
 
@@ -13,7 +13,7 @@ class UPPGameInstance;
 class UPPLevelElementWidget;
 
 UCLASS()
-class PEWPEW_API UPPMenuWidget : public UUserWidget
+class PEWPEW_API UPPMenuWidget : public UPPBaseWidget
 {
 	GENERATED_BODY()
 

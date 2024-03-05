@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/PPBaseWidget.h"
 #include "PPCoreTypes.h"
 #include "PPGameOverWidget.generated.h"
 
@@ -11,7 +11,7 @@ class UVerticalBox;
 class UButton;
 
 UCLASS()
-class PEWPEW_API UPPGameOverWidget : public UUserWidget
+class PEWPEW_API UPPGameOverWidget : public UPPBaseWidget
 {
 	GENERATED_BODY()
 

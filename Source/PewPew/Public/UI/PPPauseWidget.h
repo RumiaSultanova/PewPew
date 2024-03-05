@@ -3,12 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/PPBaseWidget.h"
 #include "PPPauseWidget.generated.h"
 
 class UButton;
 UCLASS()
-class PEWPEW_API UPPPauseWidget : public UUserWidget
+class PEWPEW_API UPPPauseWidget : public UPPBaseWidget
 {
 	GENERATED_BODY()
 

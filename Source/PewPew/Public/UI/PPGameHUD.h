@@ -7,6 +7,8 @@
 #include "PPCoreTypes.h"
 #include "PPGameHUD.generated.h"
 
+class UPPBaseWidget;
+
 UCLASS()
 class PEWPEW_API APPGameHUD : public AHUD
 {
@@ -29,10 +31,10 @@ protected:
 
 private:
 	UPROPERTY()
-	TMap<EPPMatchState, UUserWidget*> GameWidgets;
+	TMap<EPPMatchState, UPPBaseWidget*> GameWidgets;
 
 	UPROPERTY()
-	UUserWidget* CurrentWidget = nullptr;
+	UPPBaseWidget* CurrentWidget = nullptr;
 	
 	void DrawCrossHair();
 	void OnMatchStateChanged(EPPMatchState State);

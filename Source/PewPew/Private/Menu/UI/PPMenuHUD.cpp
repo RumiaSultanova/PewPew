@@ -1,7 +1,7 @@
 // Pew-Pew Game. All Rights Reserved.
 
 #include "Menu/UI/PPMenuHUD.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/PPBaseWidget.h"
 
 void APPMenuHUD::BeginPlay()
 {
@@ -9,10 +9,11 @@ void APPMenuHUD::BeginPlay()
 
 	if (MenuWidgetClass)
 	{
-		const auto MenuWidget = CreateWidget<UUserWidget>(GetWorld(), MenuWidgetClass);
+		const auto MenuWidget = CreateWidget<UPPBaseWidget>(GetWorld(), MenuWidgetClass);
 		if (MenuWidget)
 		{
 			MenuWidget->AddToViewport();
+			MenuWidget->Show();
 		}
 	}
 }
