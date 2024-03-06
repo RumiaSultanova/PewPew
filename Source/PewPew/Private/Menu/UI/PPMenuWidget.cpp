@@ -27,12 +27,19 @@ void UPPMenuWidget::NativeOnInitialized()
 	InitLevelElements();
 }
 
-void UPPMenuWidget::OnStartGame()
+void UPPMenuWidget::OnAnimationFinished_Implementation(const UWidgetAnimation* Animation)
 {
+	if (Animation != HideAnimation) { return; }
+	
 	const auto PPGameInstance = GetPPGameInstance();
 	if (!PPGameInstance) { return; }
 	
 	UGameplayStatics::OpenLevel(this, PPGameInstance->GetStartupLevel().LevelName);
+}
+
+void UPPMenuWidget::OnStartGame()
+{
+	PlayAnimation(HideAnimation);
 }
 
 void UPPMenuWidget::OnQuitGame()
