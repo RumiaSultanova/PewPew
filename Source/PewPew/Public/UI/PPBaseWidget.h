@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "PPBaseWidget.generated.h"
+class USoundCue;
 
 UCLASS()
 class PEWPEW_API UPPBaseWidget : public UUserWidget
@@ -16,5 +17,8 @@ public:
 	
 protected:
 	UPROPERTY(meta=(BindWidgetAnim), Transient)
-	UWidgetAnimation* ShowAnimation; 
+	UWidgetAnimation* ShowAnimation;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Sound")
+	USoundCue* OpenSound; 
 };

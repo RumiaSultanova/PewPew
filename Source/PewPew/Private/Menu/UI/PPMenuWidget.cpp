@@ -7,6 +7,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "PPGameInstance.h"
 #include "Menu/UI/PPLevelElementWidget.h"
+#include "Sound/SoundCue.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogPPMenuWidget, All, All)
 
@@ -40,6 +41,7 @@ void UPPMenuWidget::OnAnimationFinished_Implementation(const UWidgetAnimation* A
 void UPPMenuWidget::OnStartGame()
 {
 	PlayAnimation(HideAnimation);
+	UGameplayStatics::PlaySound2D(GetWorld(), StartGameSound);
 }
 
 void UPPMenuWidget::OnQuitGame()

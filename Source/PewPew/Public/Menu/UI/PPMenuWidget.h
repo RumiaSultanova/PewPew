@@ -11,6 +11,7 @@ class UButton;
 class UHorizontalBox;
 class UPPGameInstance;
 class UPPLevelElementWidget;
+class USoundCue;
 
 UCLASS()
 class PEWPEW_API UPPMenuWidget : public UPPBaseWidget
@@ -32,9 +33,11 @@ protected:
 
 	UPROPERTY(Transient, meta=(BindWidgetAnim))
 	UWidgetAnimation* HideAnimation;
-	
-	virtual void NativeOnInitialized() override;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Sound")
+	USoundCue* StartGameSound;
+
+	virtual void NativeOnInitialized() override;
 	virtual void OnAnimationFinished_Implementation(const UWidgetAnimation* Animation) override;
 
 private:
