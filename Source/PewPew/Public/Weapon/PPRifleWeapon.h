@@ -9,6 +9,7 @@
 class UPPWeaponFXComponent;
 class UNiagaraComponent;
 class UNiagaraSystem;
+class UAudioComponent;
 
 UCLASS()
 class PEWPEW_API APPRifleWeapon : public APPBaseWeapon
@@ -47,11 +48,15 @@ protected:
 private:
 	FTimerHandle ShotTimerHandle;
 
+	UPROPERTY()
 	UNiagaraComponent* MuzzleFXComponent;
 
+	UPROPERTY()
+	UAudioComponent* FireAudioComponent;
+	
 	void MakeDamage(const FHitResult& HitResult);
-	void InitMuzzleFX();
-	void SetMuzzleFXVisibility(bool Visible);
+	void InitFX();
+	void SetFXActive(bool IsActive);
 	void SpawnTraceFX(const FVector& TraceStart, const FVector& TraceEnd);
 	
 	AController* GetController() const;

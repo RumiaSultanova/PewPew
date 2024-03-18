@@ -7,6 +7,7 @@
 #include "PPLauncherWeapon.generated.h"
 
 class APPProjectile;
+class USoundCue;
 
 UCLASS()
 class PEWPEW_API APPLauncherWeapon : public APPBaseWeapon
@@ -19,6 +20,9 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon")
 	TSubclassOf<APPProjectile> ProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Sound")
+	USoundCue* NoAmmoSound; 
 
 	virtual void MakeShot();
 };

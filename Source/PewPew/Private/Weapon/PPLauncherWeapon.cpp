@@ -1,6 +1,9 @@
 // Pew-Pew Game. All Rights Reserved.
 
 #include "Weapon/PPLauncherWeapon.h"
+
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 #include "Weapon/PPProjectile.h"
 
 void APPLauncherWeapon::StartFire()
@@ -10,18 +13,16 @@ void APPLauncherWeapon::StartFire()
 
 void APPLauncherWeapon::MakeShot()
 {
-	if (!GetWorld() || IsAmmoEmpty())
+	if (!GetWorld()){ return; }
+
+	if (IsAmmoEmpty())
 	{
-		StopFire();
+		UGameplayStatics::SpawnSoundAtLocation(GetWorld(), NoAmmoSound, GetActorLocation());
 		return;
 	}
 
 	FVector TraceStart, TraceEnd;
-	if (!GetTraceData(TraceStart, TraceEnd))
-	{
-		StopFire();
-		return;
-	}
+	if (!GetTraceData(TraceStart, TraceEnd)) { return; }
 
 	FHitResult HitResult;
 	MakeHit(HitResult, TraceStart, TraceEnd);
@@ -40,4 +41,5 @@ void APPLauncherWeapon::MakeShot()
 
 	DecreaseAmmo();
 	SpawnMuzzleFX();
+	UGameplayStatics::SpawnSoundAttached(FireSound, WeaponMesh, MuzzleSocketName);
 }

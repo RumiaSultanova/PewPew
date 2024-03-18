@@ -6,8 +6,10 @@
 #include "Components/PPWeaponComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Controller.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
- APPBaseCharacter::APPBaseCharacter(const FObjectInitializer& ObjInit)
+APPBaseCharacter::APPBaseCharacter(const FObjectInitializer& ObjInit)
 :Super(ObjInit.SetDefaultSubobjectClass<UPPCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -76,6 +78,8 @@ void APPBaseCharacter::OnDeath()
 
  	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
  	GetMesh()->SetSimulatePhysics(true);
+
+ 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), DeathSound, GetActorLocation());
 }
 
 void APPBaseCharacter::OnGroundLanded(const FHitResult& Hit)

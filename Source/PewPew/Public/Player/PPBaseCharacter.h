@@ -9,6 +9,7 @@
 
 class UPPHealthComponent;
 class UPPWeaponComponent;
+class USoundCue;
 
 UCLASS()
 class PEWPEW_API APPBaseCharacter : public ACharacter
@@ -39,6 +40,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="Material")
 	FName MaterialColorName = "Paint Color";
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Sound")
+	USoundCue* DeathSound; 
 
 	virtual void BeginPlay() override;
 	virtual void OnDeath();
