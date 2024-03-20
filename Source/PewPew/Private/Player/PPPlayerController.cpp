@@ -4,6 +4,7 @@
 #include "Player/PPPlayerController.h"
 #include "PewPewGameModeBase.h"
 #include "Components/PPRespawnComponent.h"
+#include "PPGameInstance.h"
 
 APPPlayerController::APPPlayerController()
 {
@@ -31,6 +32,7 @@ void APPPlayerController::SetupInputComponent()
 	if (!InputComponent) { return; }
 
 	InputComponent->BindAction("PauseGame", IE_Pressed, this, &APPPlayerController::OnPauseGame);
+	InputComponent->BindAction("Mute", IE_Pressed, this, &APPPlayerController::OnMuteSound);
 }
 
 void APPPlayerController::OnPauseGame()
@@ -52,4 +54,14 @@ void APPPlayerController::OnMatchStateChanged(EPPMatchState State)
 		SetInputMode(FInputModeUIOnly());
 		bShowMouseCursor = true;
 	}
+}
+
+void APPPlayerController::OnMuteSound()
+{
+	if (!GetWorld()) { return; }
+
+	const auto PPGameInstance = GetWorld()->GetGameInstance<UPPGameInstance>();
+	if (!PPGameInstance) { return; }
+
+	PPGameInstance->ToggleVolume();
 }

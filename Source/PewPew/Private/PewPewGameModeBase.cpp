@@ -69,7 +69,7 @@ void APewPewGameModeBase::StartRound()
 
 void APewPewGameModeBase::GameTimerUpdate()
 {
- 	UE_LOG(LogPPGameModeBase, Display, TEXT("Time: %i / Round: %i/%i"), RoundCountDown, CurrentRound, GameData.RoundsNum);
+ 	// UE_LOG(LogPPGameModeBase, Display, TEXT("Time: %i / Round: %i/%i"), RoundCountDown, CurrentRound, GameData.RoundsNum);
 
 	/*
 	const auto TimerRate = GetWorldTimerManager().GetTimerRate(GameRoundTimerHandle);

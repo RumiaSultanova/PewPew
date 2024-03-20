@@ -37,7 +37,8 @@ public class PewPew : ModuleRules
 			"PewPew/Public/AI/EQS",
 			"PewPew/Public/AI/Decorators",
 			"PewPew/Public/Menu",
-			"PewPew/Public/Menu/UI"
+			"PewPew/Public/Menu/UI",
+			"PewPew/Public/Sound"
 		});
 		
 		// Uncomment if you are using Slate UI

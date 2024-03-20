@@ -7,6 +7,8 @@
 #include "PPCoreTypes.h"
 #include "PPGameInstance.generated.h"
 
+class USoundClass;
+
 UCLASS()
 class PEWPEW_API UPPGameInstance : public UGameInstance
 {
@@ -20,12 +22,17 @@ public:
 	
 	FName GetMenuLevelName () const { return MenuLevelName; }
 
+	void ToggleVolume();
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category="Game", meta=(Tooltip = "Level names must be unique"))
 	TArray<FLevelData> LevelsData;
 	
 	UPROPERTY(EditDefaultsOnly, Category="Game")
 	FName MenuLevelName = NAME_None;
+
+	UPROPERTY(EditDefaultsOnly, Category="Sound")
+	USoundClass* MasterSoundClass;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category="Game")
