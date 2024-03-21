@@ -8,6 +8,7 @@
 #include "PPHealthComponent.generated.h"
 
 class UCameraShakeBase;
+class UPhysicalMaterial;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PEWPEW_API UPPHealthComponent : public UActorComponent
@@ -51,6 +52,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="VFX")
 	TSubclassOf<UCameraShakeBase> CameraShake;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Health")
+	TMap<UPhysicalMaterial*, float> DamageModifiers;
+	
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
@@ -59,11 +63,15 @@ private:
 	FTimerHandle HealTimerHandle;
 
 	UFUNCTION()
-	void OnTakeAnyDamage(AActor* DamageActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+	void OnTakePointDamage(AActor* DamagedActor, float Damage, AController* InstigatedBy, FVector HitLocation, UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection, const UDamageType* DamageType, AActor* DamageCauser);
 
+	 UFUNCTION()
+	void OnTakeRadialDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, FVector Origin, const FHitResult& HitInfo, AController* InstigatedBy, AActor* DamageCauser);
 	void HealUpdate();
 	void SetHealth(float NewHealth);
 	void PlayCameraShake();
 
 	void Killed(AController* KillerController);
+	void ApplyDamage(float Damage, AController* InstigatedBy);
+	float GetPointDamageModifier(AActor* DamagedActor, const FName& BoneName);
 };

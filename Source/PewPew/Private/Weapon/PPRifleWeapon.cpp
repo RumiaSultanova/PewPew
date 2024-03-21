@@ -7,6 +7,7 @@
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Components/AudioComponent.h"
+#include "Engine/DamageEvents.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
 
@@ -99,7 +100,10 @@ void APPRifleWeapon::MakeDamage(const FHitResult& HitResult)
 	const auto DamagedActor = HitResult.GetActor();
 	if (!DamagedActor){ return; }
 
-	DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetController(), this);
+	FPointDamageEvent PointDamageEvent;
+	PointDamageEvent.HitInfo = HitResult; 
+	
+	DamagedActor->TakeDamage(DamageAmount, PointDamageEvent, GetController(), this);
 }
 
 void APPRifleWeapon::InitFX()
