@@ -10,6 +10,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogWeaponComponent, All, All);
+
 APPRifleWeapon::APPRifleWeapon()
 {
 	WeaponFXComponent = CreateDefaultSubobject<UPPWeaponFXComponent>("WeaponFXComponent");
@@ -33,6 +35,21 @@ void APPRifleWeapon::StopFire()
 {
 	GetWorldTimerManager().ClearTimer(ShotTimerHandle);
 	SetFXActive(false);
+}
+
+void APPRifleWeapon::Zoom(bool Enabled)
+{
+	UE_LOG(LogWeaponComponent, Warning, TEXT("Let's start"));
+	const auto Controller = Cast<APlayerController>(GetController());
+	if (!Controller || !Controller->PlayerCameraManager) { return; }
+
+	if (Enabled)
+	{
+		DefaultCameraFOV = Controller->PlayerCameraManager->GetFOVAngle();
+	}
+	
+	Controller->PlayerCameraManager->SetFOV(Enabled ? FOVZoomAngle : DefaultCameraFOV);
+	UE_LOG(LogWeaponComponent, Warning, TEXT("FOV = %f (expect %f), Enabled = %f"), Controller->PlayerCameraManager->GetFOVAngle(), Enabled ? FOVZoomAngle : DefaultCameraFOV, Enabled ? 1.0f : 0.0f);
 }
 
 void APPRifleWeapon::MakeShot()

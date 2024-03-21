@@ -75,7 +75,7 @@ void APPBaseCharacter::OnDeath()
  	
  	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
  	WeaponComponent->StopFire();
-
+ 
  	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
  	GetMesh()->SetSimulatePhysics(true);
 
