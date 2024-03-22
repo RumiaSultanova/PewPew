@@ -8,6 +8,7 @@
 #include "Camera/CameraShakeBase.h"
 #include "PewPewGameModeBase.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
+#include "Perception/AISense_Damage.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All);
 
@@ -122,6 +123,7 @@ void UPPHealthComponent::ApplyDamage(float Damage, AController* InstigatedBy)
 	}
 
 	PlayCameraShake();
+	ReportDamageEvent(Damage, InstigatedBy);
 }
 
 float UPPHealthComponent::GetPointDamageModifier(AActor* DamagedActor, const FName& BoneName)
@@ -135,4 +137,12 @@ float UPPHealthComponent::GetPointDamageModifier(AActor* DamagedActor, const FNa
 	if (!DamageModifiers.Contains(PhysicalMaterial)) { return  1.0f; }
 
 	return DamageModifiers[PhysicalMaterial];
+}
+
+void UPPHealthComponent::ReportDamageEvent(float Damage, AController* InstigatedBy)
+{
+	if (!InstigatedBy || !InstigatedBy->GetPawn() ||!GetOwner()) { return; }
+	
+	UAISense_Damage::ReportDamageEvent(GetWorld(), GetOwner(), InstigatedBy->GetPawn(),
+		Damage, InstigatedBy->GetPawn()->GetActorLocation(), GetOwner()->GetActorLocation());
 }

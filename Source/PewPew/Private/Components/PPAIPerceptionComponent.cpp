@@ -6,11 +6,17 @@
 #include "PPUtils.h"
 #include "PPHealthComponent.h"
 #include "Perception/AISense_Sight.h"
+#include "Perception/AISense_Damage.h"
 
 AActor* UPPAIPerceptionComponent::GetClosestEnemy() const
 {
 	TArray<AActor*> PerceiveActors;
 	GetCurrentlyPerceivedActors(UAISense_Sight::StaticClass(), PerceiveActors);
+	if (PerceiveActors.Num() == 0)
+	{
+		GetCurrentlyPerceivedActors(UAISense_Damage::StaticClass(), PerceiveActors);
+	}
+	
 	if (PerceiveActors.Num() == 0) { return nullptr; }
 
 	const auto Controller = Cast<AAIController>(GetOwner());
