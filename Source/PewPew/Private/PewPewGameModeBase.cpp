@@ -11,6 +11,7 @@
 #include "PPUtils.h"
 #include "Components/PPRespawnComponent.h"
 #include "EngineUtils.h"
+#include "PPWeaponComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogPPGameModeBase, All, All);
 
@@ -218,6 +219,7 @@ bool APewPewGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpause
 
  	if (PauseSet)
  	{
+ 		StopAllFire();
  		SetMatchState(EPPMatchState::Pause);
  	}
  	
@@ -259,4 +261,16 @@ void APewPewGameModeBase::SetMatchState(EPPMatchState State)
 
  	MatchState = State;
  	OnMatchStateChanged.Broadcast(MatchState);
+}
+
+void APewPewGameModeBase::StopAllFire()
+{
+ 	for (auto Pawn : TActorRange<APawn>(GetWorld()))
+ 	{
+ 		const auto WeaponComponent = PPUtils::GetPPPlayerComponent<UPPWeaponComponent>(Pawn);
+ 		if (!WeaponComponent) { continue; }
+
+ 		WeaponComponent->StopFire();
+ 		WeaponComponent->Zoom(false);
+ 	}
 }

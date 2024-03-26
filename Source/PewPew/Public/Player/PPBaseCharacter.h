@@ -57,7 +57,9 @@ public:
 	float GetMovementDirection() const;
 
 	virtual void Tick(float DeltaTime) override;
-
+	virtual void TurnOff() override;
+	virtual void Reset() override;
+	
 	void SetPlayerColor(const FLinearColor& Color);
 
 private:

@@ -38,6 +38,20 @@ void APPBaseCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void APPBaseCharacter::TurnOff()
+{
+	WeaponComponent->StopFire();
+	WeaponComponent->Zoom(false);
+	Super::TurnOff();
+}
+
+void APPBaseCharacter::Reset()
+{
+	WeaponComponent->StopFire();
+	WeaponComponent->Zoom(false);
+	 Super::Reset();
+}
+
 void APPBaseCharacter::SetPlayerColor(const FLinearColor& Color)
 {
  	const auto MaterialInst = GetMesh()->CreateAndSetMaterialInstanceDynamic(0);

@@ -17,8 +17,7 @@ void APPPlayerController::BeginPlay()
 
 	if (GetWorld())
 	{
-		const auto GameMode = Cast<APewPewGameModeBase>(GetWorld()->GetAuthGameMode());
-		if (GameMode)
+		if (const auto GameMode = Cast<APewPewGameModeBase>(GetWorld()->GetAuthGameMode()))
 		{
 			GameMode->OnMatchStateChanged.AddUObject(this, &APPPlayerController::OnMatchStateChanged);
 		}
